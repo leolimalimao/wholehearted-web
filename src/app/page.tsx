@@ -1,74 +1,56 @@
-'use client';
+import type { Metadata } from "next";
+import { Dashboard } from "./Dashboard";
 
-import { useState } from 'react';
-import { useOverview, useRecentScrobbles } from './hooks/useStats';
-import { TimeRange } from './lib/types';
-import { Container } from './components/layout/Container';
-import { Header } from './components/layout/Header';
-import { RangeSelector } from './components/ui/RangeSelector';
-import { StatCard } from './components/ui/StatCard';
-import { TrackRow } from './components/ui/TrackRow';
-import { WaveForm } from './components/charts/WaveForm';
-import { TopTracksChart } from './components/charts/TopTracksChart';
-import { TopArtistsChart } from './components/charts/TopArtistsChart';
-import { TimelineChart } from './components/charts/TimelineChart';
-import { ActivityHeatmap } from './components/charts/ActivityHeatmap';
-import { useActivityHours } from './hooks/useStats';
-import styles from './page.module.css';
+const API = process.env.NEXT_PUBLIC_API_URL;
+
+async function getOgData() {
+  try {
+    const res = await fetch(`${API}/stats/overview?range=month`, {
+      next: { revalidate: 300 },
+    });
+    const data = await res.json();
+    return {
+      total:   data.total ?? 0,
+      artist:  data.topArtists?.[0]?.artistName ?? '—',
+      track:   data.topTracks?.[0]?.trackName   ?? '—',
+      perDay:  data.perDay ?? [],
+    };
+  } catch {
+    return { total: 0, artist: '—', track: '—', perDay: [] };
+  }
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { total, artist, track, perDay } = await getOgData();
+
+  const bars = perDay.map((d: { plays: string }) => d.plays).join(",");
+
+  const ogUrl = new URL(
+    "/og",
+    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  );
+  ogUrl.searchParams.set("total", String(total));
+  ogUrl.searchParams.set("artist", artist);
+  ogUrl.searchParams.set("track", track);
+  ogUrl.searchParams.set("bars", bars);
+
+  return {
+    title: "leo.stats — scrobbling via spotify",
+    description: `${total.toLocaleString("pt-BR")} scrobbles registrados. Top artista: ${artist}. Top faixa: ${track}.`,
+    openGraph: {
+      title: "leo.stats",
+      description: `${total.toLocaleString("pt-BR")} scrobbles registrados`,
+      images: [{ url: ogUrl.toString(), width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "leo.stats",
+      description: `${total.toLocaleString("pt-BR")} scrobbles registrados`,
+      images: [ogUrl.toString()],
+    },
+  };
+}
 
 export default function Home() {
-  const [range, setRange] = useState<TimeRange>('month');
-  const { data, isLoading } = useOverview(range);
-  const { data: recent } = useRecentScrobbles(20);
-  const { data: hours } = useActivityHours(range);
-
-  return (
-    <>
-      <Header />
-      <Container>
-        <section className={styles.controls}>
-          <RangeSelector value={range} onChange={setRange} />
-        </section>
-
-        {data && (
-          <>
-            <WaveForm data={data.perDay} />
-
-            <section className={styles.statGrid}>
-              <StatCard
-                label="scrobbles"
-                value={data.total.toLocaleString('pt-BR')}
-                sub={`no período selecionado`}
-              />
-              <StatCard
-                label="faixas únicas"
-                value={new Set(data.topTracks.map((t) => t.trackSpotifyId)).size}
-              />
-              <StatCard
-                label="artistas únicos"
-                value={data.topArtists.length}
-              />
-            </section>
-
-            <section className={styles.charts}>
-            <TopTracksChart data={data.topTracks} />
-            <TopArtistsChart data={data.topArtists} />
-            <TimelineChart data={data.perDay} />
-            {hours && <ActivityHeatmap data={hours} />}
-            </section>
-          </>
-        )}
-
-        {isLoading && (
-          <p className={styles.loading}>carregando...</p>
-        )}
-
-        {recent && (
-          <section className={styles.recent}>
-            <TrackRow scrobbles={recent} />
-          </section>
-        )}
-      </Container>
-    </>
-  );
+  return <Dashboard />;
 }
