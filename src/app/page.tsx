@@ -10,12 +10,17 @@ import { StatCard } from './components/ui/StatCard';
 import { TrackRow } from './components/ui/TrackRow';
 import { WaveForm } from './components/charts/WaveForm';
 import { TopTracksChart } from './components/charts/TopTracksChart';
+import { TopArtistsChart } from './components/charts/TopArtistsChart';
+import { TimelineChart } from './components/charts/TimelineChart';
+import { ActivityHeatmap } from './components/charts/ActivityHeatmap';
+import { useActivityHours } from './hooks/useStats';
 import styles from './page.module.css';
 
 export default function Home() {
   const [range, setRange] = useState<TimeRange>('month');
   const { data, isLoading } = useOverview(range);
   const { data: recent } = useRecentScrobbles(20);
+  const { data: hours } = useActivityHours(range);
 
   return (
     <>
@@ -46,7 +51,10 @@ export default function Home() {
             </section>
 
             <section className={styles.charts}>
-              <TopTracksChart data={data.topTracks} />
+            <TopTracksChart data={data.topTracks} />
+            <TopArtistsChart data={data.topArtists} />
+            <TimelineChart data={data.perDay} />
+            {hours && <ActivityHeatmap data={hours} />}
             </section>
           </>
         )}
