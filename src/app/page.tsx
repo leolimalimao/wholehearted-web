@@ -1,22 +1,66 @@
 'use client';
 
 import { useState } from 'react';
-import { useOverview } from './hooks/useStats';
+import { useOverview, useRecentScrobbles } from './hooks/useStats';
 import { TimeRange } from './lib/types';
+import { Container } from './components/layout/Container';
+import { Header } from './components/layout/Header';
+import { RangeSelector } from './components/ui/RangeSelector';
+import { StatCard } from './components/ui/StatCard';
+import { TrackRow } from './components/ui/TrackRow';
+import { WaveForm } from './components/charts/WaveForm';
+import { TopTracksChart } from './components/charts/TopTracksChart';
+import styles from './page.module.css';
 
 export default function Home() {
   const [range, setRange] = useState<TimeRange>('month');
-  const { data, isLoading, isError } = useOverview(range);
-
-  if (isLoading) return <p style={{ color: 'var(--color-muted)', padding: '2rem' }}>Carregando...</p>;
-  if (isError) return <p style={{ color: 'var(--color-muted)', padding: '2rem' }}>Erro ao carregar dados. Backend está rodando?</p>;
+  const { data, isLoading } = useOverview(range);
+  const { data: recent } = useRecentScrobbles(20);
 
   return (
-    <main style={{ padding: '2rem', fontFamily: 'var(--font-display)' }}>
-      <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>Leo Stats</h1>
-      <p style={{ color: 'var(--color-muted)', fontFamily: 'var(--font-mono)' }}>
-        {data?.total} scrobbles no período
-      </p>
-    </main>
+    <>
+      <Header />
+      <Container>
+        <section className={styles.controls}>
+          <RangeSelector value={range} onChange={setRange} />
+        </section>
+
+        {data && (
+          <>
+            <WaveForm data={data.perDay} />
+
+            <section className={styles.statGrid}>
+              <StatCard
+                label="scrobbles"
+                value={data.total.toLocaleString('pt-BR')}
+                sub={`no período selecionado`}
+              />
+              <StatCard
+                label="faixas únicas"
+                value={new Set(data.topTracks.map((t) => t.trackSpotifyId)).size}
+              />
+              <StatCard
+                label="artistas únicos"
+                value={data.topArtists.length}
+              />
+            </section>
+
+            <section className={styles.charts}>
+              <TopTracksChart data={data.topTracks} />
+            </section>
+          </>
+        )}
+
+        {isLoading && (
+          <p className={styles.loading}>carregando...</p>
+        )}
+
+        {recent && (
+          <section className={styles.recent}>
+            <TrackRow scrobbles={recent} />
+          </section>
+        )}
+      </Container>
+    </>
   );
 }
