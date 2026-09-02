@@ -10,6 +10,7 @@ export async function GET(req: NextRequest) {
   const artist = searchParams.get("artist") ?? "—";
   const track = searchParams.get("track") ?? "—";
   const bars = searchParams.get("bars") ?? "";
+  const name = searchParams.get("name") ?? "wholehearted.stats";
 
   // bars vem como string "12,5,30,8,..." — valores de plays por dia
   const barValues = bars
@@ -41,7 +42,7 @@ export async function GET(req: NextRequest) {
             letterSpacing: 4,
           }}
         >
-          LEO.STATS
+          {name.toUpperCase()}
         </p>
         <p style={{ fontSize: 15, color: "#6C63FF", margin: 0 }}>
           scrobbling via spotify

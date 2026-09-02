@@ -1,0 +1,184 @@
+.wrapper {
+  min-height: 100vh;
+  background: var(--color-bg);
+}
+
+.hero {
+  padding: var(--space-8) 0 var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: var(--space-6);
+}
+
+.name {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: var(--space-2);
+}
+
+.slug {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+.accent {
+  color: var(--color-accent);
+}
+
+.total {
+  margin-top: var(--space-5);
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.totalNumber {
+  font-family: var(--font-display);
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.totalLabel {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+.section {
+  margin-bottom: var(--space-7);
+}
+
+.sectionTitle {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: var(--space-4);
+}
+
+.artistGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: var(--space-3);
+}
+
+.artistCard {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.artistRank {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--color-muted);
+}
+
+.artistName {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.2;
+}
+
+.artistPlays {
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--color-accent);
+  margin-top: auto;
+}
+
+.trackList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.trackRow {
+  display: grid;
+  grid-template-columns: 24px 1fr auto;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.trackRow:last-child {
+  border-bottom: none;
+}
+
+.trackRank {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-muted);
+  text-align: right;
+}
+
+.trackInfo {
+  overflow: hidden;
+}
+
+.trackName {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.trackArtist {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+.trackPlays {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-accent);
+  white-space: nowrap;
+}
+
+.notFound {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+}
+
+.notFoundTitle {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--color-text);
+}
+
+.notFoundSub {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+.backLink {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--color-accent);
+  text-decoration: none;
+}

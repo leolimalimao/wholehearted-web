@@ -19,7 +19,7 @@ async function fetcher<T>(path: string): Promise<T> {
 
 export const api = {
   me: () =>
-    fetcher<{ authenticated: boolean; spotifyId?: string }>('/auth/me'),
+    fetcher<{ authenticated: boolean; spotifyId?: string; slug?: string }>('/auth/me'),
 
   overview: (range: TimeRange) =>
     fetcher<OverviewData>(`/stats/overview?range=${range}`),
@@ -41,4 +41,18 @@ export const api = {
 
   recent: (limit = 20) =>
     fetcher<Scrobble[]>(`/stats/recent?limit=${limit}`),
+
+  publicProfile: (slug: string) =>
+    fetcher<{ slug: string; displayName: string; total: number; topTracks: TopTrack[]; topArtists: TopArtist[] }>(
+      `/public/profile/${slug}`
+    ),
+
+  publicOverview: (slug: string, range: TimeRange) =>
+    fetcher<OverviewData>(`/public/profile/${slug}/overview?range=${range}`),
+
+  publicRecent: (slug: string, limit = 20) =>
+    fetcher<Scrobble[]>(`/public/profile/${slug}/recent?limit=${limit}`),
+
+  publicHours: (slug: string, range: TimeRange) =>
+    fetcher<HourActivity[]>(`/public/profile/${slug}/hours?range=${range}`),
 };
