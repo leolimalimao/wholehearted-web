@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useOverview, useRecentScrobbles, useActivityHours } from './hooks/useStats';
+import { useAuth } from './hooks/useAuth';
 import { TimeRange } from './lib/types';
 import { Container } from './components/layout/Container';
 import { Header } from './components/layout/Header';
@@ -13,13 +14,22 @@ import { TopTracksChart } from './components/charts/TopTracksChart';
 import { TopArtistsChart } from './components/charts/TopArtistsChart';
 import { TimelineChart } from './components/charts/TimelineChart';
 import { ActivityHeatmap } from './components/charts/ActivityHeatmap';
+import { LoadingScreen } from './components/ui/LoadingScreen';
+import { LoginScreen } from './components/ui/LoginScreen';
 import styles from './page.module.css';
 
 export function Dashboard() {
   const [range, setRange] = useState<TimeRange>('month');
-  const { data, isLoading } = useOverview(range);
-  const { data: recent } = useRecentScrobbles(20);
-  const { data: hours } = useActivityHours(range);
+  const { data: auth, isLoading: authLoading } = useAuth();
+  const { data, isLoading } = useOverview(range, auth?.authenticated);
+  const { data: recent } = useRecentScrobbles(20, auth?.authenticated);
+  const { data: hours } = useActivityHours(range, auth?.authenticated);
+
+  // aguarda verificação de sessão
+  if (authLoading) return <LoadingScreen message="verificando sessão..." />;
+
+  // não autenticado — mostra tela de login
+  if (!auth?.authenticated) return <LoginScreen />;
 
   return (
     <>
@@ -58,9 +68,7 @@ export function Dashboard() {
           </>
         )}
 
-        {isLoading && (
-          <p className={styles.loading}>carregando...</p>
-        )}
+        {isLoading && <p className={styles.loading}>carregando...</p>}
 
         {recent && (
           <section className={styles.recent}>

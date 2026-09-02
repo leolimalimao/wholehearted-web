@@ -1,14 +1,26 @@
-import { OverviewData, TimeRange, TopArtist, TopTrack, DayActivity, HourActivity, DowActivity, Scrobble } from './types';
+import { OverviewData, TimeRange, TopArtist, TopTrack, DayActivity, HourActivity, Scrobble } from './types';
 
 const BASE = process.env.NEXT_PUBLIC_API_URL;
 
 async function fetcher<T>(path: string): Promise<T> {
-  const res = await fetch(`${BASE}${path}`);
+  const res = await fetch(`${BASE}${path}`, {
+    credentials: 'include', // envia cookie httpOnly em toda req
+  });
+
+  if (res.status === 401) {
+    // limpa o estado do React Query e redireciona
+    window.location.href = '/';
+    throw new Error('Sessão expirada');
+  }
+
   if (!res.ok) throw new Error(`API error: ${res.status}`);
   return res.json();
 }
 
 export const api = {
+  me: () =>
+    fetcher<{ authenticated: boolean; spotifyId?: string }>('/auth/me'),
+
   overview: (range: TimeRange) =>
     fetcher<OverviewData>(`/stats/overview?range=${range}`),
 
@@ -25,7 +37,7 @@ export const api = {
     fetcher<HourActivity[]>(`/stats/activity/hours?range=${range}`),
 
   days: (range: TimeRange) =>
-    fetcher<DowActivity[]>(`/stats/activity/days?range=${range}`),
+    fetcher<any[]>(`/stats/activity/days?range=${range}`),
 
   recent: (limit = 20) =>
     fetcher<Scrobble[]>(`/stats/recent?limit=${limit}`),
