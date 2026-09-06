@@ -81,6 +81,10 @@
   padding: var(--space-6) 0;
 }
 
+.waveform {
+  margin: 1.5rem 0;
+}
+
 @media (max-width: 640px) {
   .statGrid {
     grid-template-columns: 1fr;
