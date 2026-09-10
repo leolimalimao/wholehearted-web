@@ -2,10 +2,55 @@
 
 import React, { useState, useMemo } from 'react';
 import { DayActivity } from '../../lib/types';
+import { Skeleton } from '../ui/Skeleton';
 import styles from './ActivityCalendar.module.css';
 
+export function ActivityCalendarSkeleton() {
+  return (
+    <div className={styles.wrapper}>
+      <div className={styles.header}>
+        <Skeleton height="0.7rem" width="160px" />
+        <Skeleton height="0.75rem" width="140px" />
+      </div>
+
+      <div className={styles.calendarContainer}>
+        <div className={`${styles.calendarGrid} ${styles.calendarGridSkeleton}`}>
+          {/* Labels dos dias da semana */}
+          <div className={styles.dayLabels}>
+            <span className={styles.dayLabel}></span>
+            <span className={styles.dayLabel}>seg</span>
+            <span className={styles.dayLabel}></span>
+            <span className={styles.dayLabel}>qua</span>
+            <span className={styles.dayLabel}></span>
+            <span className={styles.dayLabel}>sex</span>
+            <span className={styles.dayLabel}></span>
+          </div>
+
+          {/* Colunas das semanas (skeleton) */}
+          <div className={styles.weeksWrapper}>
+            {Array.from({ length: 53 }).map((_, wIdx) => (
+              <div key={wIdx} className={styles.weekColumn}>
+                <div className={styles.monthLabel} />
+                {Array.from({ length: 7 }).map((_, dIdx) => (
+                  <div key={dIdx} className={styles.cellSkeleton} />
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Legenda de intensidades skeleton */}
+      <div className={styles.footer}>
+        <Skeleton height="0.65rem" width="110px" />
+      </div>
+    </div>
+  );
+}
+
 interface Props {
-  data: DayActivity[];
+  data?: DayActivity[];
+  isLoading?: boolean;
 }
 
 interface DayCell {
@@ -16,7 +61,10 @@ interface DayCell {
   isWithinWindow: boolean;
 }
 
-export function ActivityCalendar({ data }: Props) {
+export function ActivityCalendar({ data, isLoading }: Props) {
+  if (isLoading || !data) {
+    return <ActivityCalendarSkeleton />;
+  }
   const [tooltip, setTooltip] = useState<{
     x: number;
     y: number;

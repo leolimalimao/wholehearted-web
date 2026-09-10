@@ -28,6 +28,7 @@ export function ActivityHeatmap({ data }: Props) {
       <p className={styles.title}>atividade por hora do dia</p>
       <div className={styles.chart}>
         <ResponsiveBar
+          animate={false}
           data={filled}
           keys={['plays']}
           indexBy="hour"

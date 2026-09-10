@@ -9,6 +9,8 @@ interface Props {
 }
 
 export function TopTracksChart({ data }: Props) {
+  if (!data?.length) return null;
+
   const chartData = [...data]
     .reverse()
     .map((t) => ({
@@ -22,6 +24,7 @@ export function TopTracksChart({ data }: Props) {
       <p className={styles.title}>top faixas</p>
       <div className={styles.chart}>
         <ResponsiveBar
+          animate={false}
           data={chartData}
           keys={['plays']}
           indexBy="track"

@@ -26,6 +26,7 @@ export function TimelineChart({ data }: Props) {
       <p className={styles.title}>atividade ao longo do tempo</p>
       <div className={styles.chart}>
         <ResponsiveLine
+          animate={false}
           data={chartData}
           margin={{ top: 10, right: 40, bottom: 50, left: 40 }}
           xScale={{ type: 'point' }}
@@ -42,8 +43,12 @@ export function TimelineChart({ data }: Props) {
             tickValues: 5,
             tickRotation: 0,
             format: (value: string) => {
-              const [, month, day] = value.split('-');
-              return `${day}/${month}`;
+              if (!value) return '';
+              const parts = String(value).split('-');
+              if (parts.length >= 3) {
+                return `${parts[2]}/${parts[1]}`;
+              }
+              return String(value);
             },
           }}
           axisLeft={{
