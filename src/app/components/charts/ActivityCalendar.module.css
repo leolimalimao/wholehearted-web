@@ -32,12 +32,16 @@
 .calendarContainer {
   overflow-x: auto;
   padding-bottom: var(--space-2);
+  display: flex;
+  justify-content: safe center;
 }
 
 .calendarGrid {
   display: inline-flex;
   gap: 8px;
   position: relative;
+  margin: 0 auto;
+  flex-shrink: 0;
 }
 
 .dayLabels {
@@ -178,4 +182,46 @@
 .tooltipDate {
   color: var(--color-muted);
   font-size: 0.68rem;
+}
+
+/* Skeleton do Calendário */
+.cellSkeleton {
+  width: 11px;
+  height: 11px;
+  border-radius: 2px;
+  background-color: rgba(255, 255, 255, 0.04);
+  cursor: default;
+}
+
+.calendarGridSkeleton {
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.calendarGridSkeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(108, 99, 255, 0.08) 50%,
+    transparent 100%
+  );
+  animation: shimmer 1.8s ease-in-out infinite;
+  transform: translateX(-100%);
+  pointer-events: none;
+}
+
+@keyframes shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .calendarGridSkeleton::after {
+    animation: none;
+  }
 }

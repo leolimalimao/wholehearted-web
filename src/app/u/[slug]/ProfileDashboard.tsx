@@ -8,7 +8,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { Container } from "../../components/layout/Container";
 import { RangeSelector } from "../../components/ui/RangeSelector";
 import { StatCard } from "../../components/ui/StatCard";
-import { ActivityCalendar } from "../../components/charts/ActivityCalendar";
+import { ActivityCalendar, ActivityCalendarSkeleton } from "../../components/charts/ActivityCalendar";
 import { TopTracksChart } from "../../components/charts/TopTracksChart";
 import { TopArtistsChart } from "../../components/charts/TopArtistsChart";
 import { TimelineChart } from "../../components/charts/TimelineChart";
@@ -50,6 +50,8 @@ export function ProfileDashboard({ slug, displayName }: Props) {
     queryKey: ["public-timeline", slug, "year"],
     queryFn: () => api.publicTimeline(slug, "year"),
   });
+
+  const calendarLoading = overviewLoading || timelineLoading;
 
   return (
     <>
@@ -130,8 +132,8 @@ export function ProfileDashboard({ slug, displayName }: Props) {
 
         {/* activity calendar estilo github */}
         <div className={styles.waveform}>
-          {timelineLoading && overviewLoading ? (
-            <Skeleton height="140px" width="100%" />
+          {calendarLoading ? (
+            <ActivityCalendarSkeleton />
           ) : (yearTimeline ?? data?.perDay) ? (
             <ActivityCalendar data={yearTimeline ?? data!.perDay} />
           ) : null}
@@ -141,26 +143,26 @@ export function ProfileDashboard({ slug, displayName }: Props) {
         <section className={styles.charts}>
           {overviewLoading ? (
             <TopArtistsSkeleton />
-          ) : data?.topArtists ? (
-            <TopArtistsChart data={data.topArtists} recent={recent} />
+          ) : data?.topArtists?.length ? (
+            <TopArtistsChart key={`artists-${range}`} data={data.topArtists} recent={recent} />
           ) : null}
 
           {overviewLoading ? (
             <ChartSkeleton height={320} bars={10} />
-          ) : data?.topTracks ? (
-            <TopTracksChart data={data.topTracks} />
+          ) : data?.topTracks?.length ? (
+            <TopTracksChart key={`tracks-${range}`} data={data.topTracks} />
           ) : null}
 
           {overviewLoading ? (
             <ChartSkeleton height={220} bars={30} />
-          ) : data?.perDay ? (
-            <TimelineChart data={data.perDay} />
+          ) : data?.perDay?.length ? (
+            <TimelineChart key={`timeline-${range}`} data={data.perDay} />
           ) : null}
 
           {hoursLoading ? (
             <ChartSkeleton height={180} bars={24} />
-          ) : hours ? (
-            <ActivityHeatmap data={hours} />
+          ) : hours?.length ? (
+            <ActivityHeatmap key={`heatmap-${range}`} data={hours} />
           ) : null}
         </section>
 

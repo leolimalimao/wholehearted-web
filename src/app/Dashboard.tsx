@@ -31,7 +31,7 @@ export function Dashboard() {
   const { data, isLoading } = useOverview(range, auth?.authenticated);
   const { data: recent } = useRecentScrobbles(20, auth?.authenticated);
   const { data: hours } = useActivityHours(range, auth?.authenticated);
-  const { data: yearActivity } = useActivityTimeline('year', auth?.authenticated);
+  const { data: yearActivity, isLoading: yearLoading } = useActivityTimeline('year', auth?.authenticated);
 
   // redireciona pro perfil público quando autenticado
   useEffect(() => {
@@ -76,13 +76,24 @@ export function Dashboard() {
               />
             </section>
 
-            <ActivityCalendar data={yearActivity ?? data.perDay} />
+            <ActivityCalendar
+              data={yearActivity ?? data.perDay}
+              isLoading={isLoading || yearLoading}
+            />
 
             <section className={styles.charts}>
-              <TopArtistsChart data={data.topArtists} recent={recent} />
-              <TopTracksChart data={data.topTracks} />
-              <TimelineChart data={data.perDay} />
-              {hours && <ActivityHeatmap data={hours} />}
+              {data.topArtists?.length ? (
+                <TopArtistsChart key={`artists-${range}`} data={data.topArtists} recent={recent} />
+              ) : null}
+              {data.topTracks?.length ? (
+                <TopTracksChart key={`tracks-${range}`} data={data.topTracks} />
+              ) : null}
+              {data.perDay?.length ? (
+                <TimelineChart key={`timeline-${range}`} data={data.perDay} />
+              ) : null}
+              {hours?.length ? (
+                <ActivityHeatmap key={`heatmap-${range}`} data={hours} />
+              ) : null}
             </section>
           </>
         )}
