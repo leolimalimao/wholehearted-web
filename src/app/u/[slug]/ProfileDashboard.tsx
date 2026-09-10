@@ -142,7 +142,7 @@ export function ProfileDashboard({ slug, displayName }: Props) {
           {overviewLoading ? (
             <TopArtistsSkeleton />
           ) : data?.topArtists ? (
-            <TopArtistsChart data={data.topArtists} />
+            <TopArtistsChart data={data.topArtists} recent={recent} />
           ) : null}
 
           {overviewLoading ? (

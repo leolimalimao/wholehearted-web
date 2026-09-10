@@ -11,6 +11,7 @@ export interface TopTrack {
 export interface TopArtist {
   artistName: string;
   plays: string;
+  imageUrl?: string | null;
 }
 
 export interface DayActivity {
