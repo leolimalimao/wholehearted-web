@@ -2,7 +2,7 @@
 
 Dashboard de estatísticas de escuta musical com perfis públicos, alimentado por dados reais do Spotify. Cada música ouvida é registrada automaticamente e transformada em visualizações interativas.
 
-**Produção:** https://spotify-lastfm-web.vercel.app
+**Produção:** https://wholehearted-stats.vercel.app/u/leonardo
 
 ---
 
