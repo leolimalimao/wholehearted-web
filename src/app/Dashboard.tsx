@@ -5,6 +5,7 @@ import {
   useOverview,
   useRecentScrobbles,
   useActivityHours,
+  useActivityTimeline,
 } from "./hooks/useStats";
 import { useAuth } from "./hooks/useAuth";
 import { TimeRange } from "./lib/types";
@@ -13,7 +14,7 @@ import { Header } from "./components/layout/Header";
 import { RangeSelector } from "./components/ui/RangeSelector";
 import { StatCard } from "./components/ui/StatCard";
 import { TrackRow } from "./components/ui/TrackRow";
-import { WaveForm } from "./components/charts/WaveForm";
+import { ActivityCalendar } from "./components/charts/ActivityCalendar";
 import { TopTracksChart } from "./components/charts/TopTracksChart";
 import { TopArtistsChart } from "./components/charts/TopArtistsChart";
 import { TimelineChart } from "./components/charts/TimelineChart";
@@ -30,6 +31,7 @@ export function Dashboard() {
   const { data, isLoading } = useOverview(range, auth?.authenticated);
   const { data: recent } = useRecentScrobbles(20, auth?.authenticated);
   const { data: hours } = useActivityHours(range, auth?.authenticated);
+  const { data: yearActivity } = useActivityTimeline('year', auth?.authenticated);
 
   // redireciona pro perfil público quando autenticado
   useEffect(() => {
@@ -51,8 +53,6 @@ export function Dashboard() {
 
         {data && (
           <>
-            <WaveForm data={data.perDay} />
-
             <section className={styles.statGrid}>
               <StatCard
                 label="scrobbles"
@@ -61,15 +61,22 @@ export function Dashboard() {
               />
               <StatCard
                 label="faixas únicas"
-                value={
-                  new Set(data.topTracks.map((t) => t.trackSpotifyId)).size
-                }
+                value={(data.uniqueTracks ?? new Set(data.topTracks.map((t) => t.trackSpotifyId)).size).toLocaleString("pt-BR")}
+                sub="músicas distintas"
               />
               <StatCard
                 label="artistas únicos"
-                value={data.topArtists.length}
+                value={(data.uniqueArtists ?? data.topArtists.length).toLocaleString("pt-BR")}
+                sub="artistas diferentes"
+              />
+              <StatCard
+                label="sequência ativa"
+                value={data.streak !== undefined ? `${data.streak} ${data.streak === 1 ? 'dia' : 'dias'}` : "—"}
+                sub={data.streak ? "consecutivos ouvindo" : "nenhum dia consecutivo"}
               />
             </section>
+
+            <ActivityCalendar data={yearActivity ?? data.perDay} />
 
             <section className={styles.charts}>
               <TopTracksChart data={data.topTracks} />

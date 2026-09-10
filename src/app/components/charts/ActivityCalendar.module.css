@@ -1,0 +1,181 @@
+.wrapper {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  margin-bottom: var(--space-7);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.title {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.summary {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-accent);
+}
+
+.calendarContainer {
+  overflow-x: auto;
+  padding-bottom: var(--space-2);
+}
+
+.calendarGrid {
+  display: inline-flex;
+  gap: 8px;
+  position: relative;
+}
+
+.dayLabels {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-top: 19px; /* Alinha com os blocos abaixo do label de mês */
+}
+
+.dayLabel {
+  height: 11px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--color-muted);
+  line-height: 11px;
+  width: 24px;
+  text-align: right;
+  padding-right: 4px;
+}
+
+.weeksWrapper {
+  display: flex;
+  gap: 3px;
+}
+
+.weekColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.monthLabel {
+  height: 16px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--color-muted);
+  line-height: 16px;
+}
+
+.cell {
+  width: 11px;
+  height: 11px;
+  border-radius: 2px;
+  border: 1px solid transparent;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.cell:hover {
+  transform: scale(1.3);
+  z-index: 10;
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.cellEmpty {
+  width: 11px;
+  height: 11px;
+  visibility: hidden;
+}
+
+/* Níveis de intensidade de cor */
+.level0 {
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+.level1 {
+  background-color: rgba(108, 99, 255, 0.3);
+}
+
+.level2 {
+  background-color: rgba(108, 99, 255, 0.55);
+}
+
+.level3 {
+  background-color: rgba(108, 99, 255, 0.8);
+}
+
+.level4 {
+  background-color: #6c63ff;
+  box-shadow: 0 0 8px rgba(108, 99, 255, 0.4);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.legendText {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--color-muted);
+}
+
+.legendScale {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+}
+
+.legendCell {
+  width: 11px;
+  height: 11px;
+  border-radius: 2px;
+}
+
+/* Tooltip flutuante */
+.tooltip {
+  position: fixed;
+  pointer-events: none;
+  background: #13131a;
+  border: 1px solid rgba(108, 99, 255, 0.35);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--color-text);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  transform: translate(-50%, -100%);
+  margin-top: -8px;
+  white-space: nowrap;
+}
+
+.tooltipCount {
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+.tooltipDate {
+  color: var(--color-muted);
+  font-size: 0.68rem;
+}

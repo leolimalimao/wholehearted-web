@@ -4,8 +4,8 @@
 
 .statGrid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-5);
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
   margin-bottom: var(--space-7);
 }
 
@@ -25,6 +25,12 @@
   font-size: 0.8rem;
   color: var(--color-muted);
   padding: var(--space-6) 0;
+}
+
+@media (max-width: 960px) {
+  .statGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 640px) {

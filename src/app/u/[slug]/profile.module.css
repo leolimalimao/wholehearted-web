@@ -58,8 +58,8 @@
 
 .statGrid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-5);
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
   margin-bottom: var(--space-7);
 }
 
@@ -83,6 +83,12 @@
 
 .waveform {
   margin: 1.5rem 0;
+}
+
+@media (max-width: 960px) {
+  .statGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 640px) {

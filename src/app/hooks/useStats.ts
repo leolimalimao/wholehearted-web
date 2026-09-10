@@ -25,3 +25,11 @@ export function useActivityHours(range: TimeRange, enabled = false) {
     enabled,
   });
 }
+
+export function useActivityTimeline(range: TimeRange = 'year', enabled = false) {
+  return useQuery({
+    queryKey: ['timeline', range],
+    queryFn: () => api.timeline(range),
+    enabled,
+  });
+}

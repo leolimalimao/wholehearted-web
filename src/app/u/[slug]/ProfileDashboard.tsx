@@ -8,7 +8,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { Container } from "../../components/layout/Container";
 import { RangeSelector } from "../../components/ui/RangeSelector";
 import { StatCard } from "../../components/ui/StatCard";
-import { WaveForm } from "../../components/charts/WaveForm";
+import { ActivityCalendar } from "../../components/charts/ActivityCalendar";
 import { TopTracksChart } from "../../components/charts/TopTracksChart";
 import { TopArtistsChart } from "../../components/charts/TopArtistsChart";
 import { TimelineChart } from "../../components/charts/TimelineChart";
@@ -46,6 +46,11 @@ export function ProfileDashboard({ slug, displayName }: Props) {
     queryFn: () => api.publicHours(slug, range),
   });
 
+  const { data: yearTimeline, isLoading: timelineLoading } = useQuery({
+    queryKey: ["public-timeline", slug, "year"],
+    queryFn: () => api.publicTimeline(slug, "year"),
+  });
+
   return (
     <>
       <div className={styles.hero}>
@@ -81,15 +86,6 @@ export function ProfileDashboard({ slug, displayName }: Props) {
           <RangeSelector value={range} onChange={setRange} />
         </section>
 
-        {/* waveform — skeleton inline */}
-        <div className={styles.waveform}>
-          {overviewLoading ? (
-            <Skeleton height="80px" width="100%" />
-          ) : data?.perDay ? (
-            <WaveForm data={data.perDay} />
-          ) : null}
-        </div>
-
         {/* stat cards */}
         <section className={styles.statGrid}>
           <StatCard
@@ -101,18 +97,45 @@ export function ProfileDashboard({ slug, displayName }: Props) {
           <StatCard
             label="faixas únicas"
             value={
-              data
-                ? new Set(data.topTracks.map((t) => t.trackSpotifyId)).size
+              data?.uniqueTracks !== undefined
+                ? data.uniqueTracks.toLocaleString("pt-BR")
+                : data
+                ? new Set(data.topTracks.map((t) => t.trackSpotifyId)).size.toLocaleString("pt-BR")
                 : undefined
             }
+            sub="músicas distintas"
             isLoading={overviewLoading}
           />
           <StatCard
             label="artistas únicos"
-            value={data?.topArtists.length}
+            value={
+              data?.uniqueArtists !== undefined
+                ? data.uniqueArtists.toLocaleString("pt-BR")
+                : data?.topArtists.length.toLocaleString("pt-BR")
+            }
+            sub="artistas diferentes"
+            isLoading={overviewLoading}
+          />
+          <StatCard
+            label="sequência ativa"
+            value={
+              data?.streak !== undefined
+                ? `${data.streak} ${data.streak === 1 ? 'dia' : 'dias'}`
+                : undefined
+            }
+            sub={data?.streak ? "consecutivos ouvindo" : "nenhum dia consecutivo"}
             isLoading={overviewLoading}
           />
         </section>
+
+        {/* activity calendar estilo github */}
+        <div className={styles.waveform}>
+          {timelineLoading && overviewLoading ? (
+            <Skeleton height="140px" width="100%" />
+          ) : (yearTimeline ?? data?.perDay) ? (
+            <ActivityCalendar data={yearTimeline ?? data!.perDay} />
+          ) : null}
+        </div>
 
         {/* gráficos */}
         <section className={styles.charts}>

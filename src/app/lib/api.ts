@@ -55,4 +55,7 @@ export const api = {
 
   publicHours: (slug: string, range: TimeRange) =>
     fetcher<HourActivity[]>(`/public/profile/${slug}/hours?range=${range}`),
+
+  publicTimeline: (slug: string, range: TimeRange = 'year') =>
+    fetcher<DayActivity[]>(`/public/profile/${slug}/timeline?range=${range}`),
 };

@@ -39,6 +39,9 @@ export interface Scrobble {
 
 export interface OverviewData {
   total: number;
+  uniqueTracks?: number;
+  uniqueArtists?: number;
+  streak?: number;
   topTracks: TopTrack[];
   topArtists: TopArtist[];
   perDay: DayActivity[];
