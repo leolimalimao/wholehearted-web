@@ -79,8 +79,8 @@ export function Dashboard() {
             <ActivityCalendar data={yearActivity ?? data.perDay} />
 
             <section className={styles.charts}>
-              <TopTracksChart data={data.topTracks} />
               <TopArtistsChart data={data.topArtists} />
+              <TopTracksChart data={data.topTracks} />
               <TimelineChart data={data.perDay} />
               {hours && <ActivityHeatmap data={hours} />}
             </section>

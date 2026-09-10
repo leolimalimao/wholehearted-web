@@ -140,15 +140,15 @@ export function ProfileDashboard({ slug, displayName }: Props) {
         {/* gráficos */}
         <section className={styles.charts}>
           {overviewLoading ? (
-            <ChartSkeleton height={320} bars={10} />
-          ) : data?.topTracks ? (
-            <TopTracksChart data={data.topTracks} />
-          ) : null}
-
-          {overviewLoading ? (
             <TopArtistsSkeleton />
           ) : data?.topArtists ? (
             <TopArtistsChart data={data.topArtists} />
+          ) : null}
+
+          {overviewLoading ? (
+            <ChartSkeleton height={320} bars={10} />
+          ) : data?.topTracks ? (
+            <TopTracksChart data={data.topTracks} />
           ) : null}
 
           {overviewLoading ? (

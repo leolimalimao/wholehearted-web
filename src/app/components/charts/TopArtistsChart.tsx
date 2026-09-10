@@ -25,6 +25,11 @@ export function TopArtistsChart({ data }: Props) {
               ease: 'easeOut',
             }}
           >
+            <img
+              src={`https://via.placeholder.com/50?text=${encodeURIComponent(artist.artistName)}`}
+              alt={artist.artistName}
+              className={styles.image}
+            />
             <span className={styles.rank}>#{i + 1}</span>
             <p className={styles.name}>{artist.artistName}</p>
             <p className={styles.plays}>{parseInt(artist.plays).toLocaleString('pt-BR')}</p>
