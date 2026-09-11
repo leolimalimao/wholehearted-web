@@ -1,0 +1,336 @@
+.footerWrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--space-8) var(--space-4) var(--space-7);
+  position: relative;
+  z-index: 10;
+}
+
+.island {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  max-width: 580px;
+  padding: var(--space-6) var(--space-6) var(--space-5);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.45),
+              0 0 40px -10px var(--color-glow-violet);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.island:hover {
+  border-color: rgba(108, 99, 255, 0.22);
+  box-shadow: 0 20px 44px -12px rgba(0, 0, 0, 0.55),
+              0 0 50px -8px var(--color-glow-violet);
+}
+
+/* Badge flutuante no topo */
+.floatingBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  margin-top: -38px;
+  margin-bottom: var(--space-4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  animation: floatLevitate 5s ease-in-out infinite;
+  user-select: none;
+}
+
+@keyframes floatLevitate {
+  0%, 100% {
+    transform: translateY(0);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2), 0 0 12px rgba(108, 99, 255, 0.1);
+  }
+  50% {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25), 0 0 20px rgba(108, 99, 255, 0.2);
+  }
+}
+
+.musicIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-accent);
+  filter: drop-shadow(0 0 6px var(--color-accent-glow));
+}
+
+.badgeText {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--color-text);
+}
+
+/* Branding */
+.brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.2;
+  margin-bottom: var(--space-2);
+}
+
+.brandName {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+}
+
+.brandAccent {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  letter-spacing: -0.02em;
+}
+
+/* Tagline */
+.tagline {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  color: var(--color-muted);
+  max-width: 380px;
+  line-height: 1.5;
+  margin-bottom: var(--space-4);
+}
+
+/* Navegação */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: var(--space-4);
+}
+
+.link,
+.linkButton {
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--color-muted);
+  text-decoration: none;
+  background: none;
+  border: none;
+  padding: 4px 6px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease;
+  line-height: 1;
+}
+
+.link:hover,
+.linkButton:hover {
+  color: var(--color-text);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.linkButton:focus-visible,
+.link:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.dot {
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 0.85rem;
+  user-select: none;
+}
+
+/* Copyright */
+.copyright {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.35);
+  letter-spacing: 0.03em;
+}
+
+/* --- MODAL DIALOG (ABOUT & PRIVACY) --- */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 9, 13, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  animation: modalFadeIn 0.2s ease-out forwards;
+}
+
+.modalContent {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  background: rgba(18, 18, 26, 0.88);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7),
+              0 0 30px var(--color-glow-violet);
+  color: var(--color-text);
+  text-align: left;
+  animation: modalPopIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalPopIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.modalTitle {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+}
+
+.closeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-border);
+  color: var(--color-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.closeButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-text);
+  transform: scale(1.05);
+}
+
+.modalBody {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: #C6C6D6;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.modalBody p {
+  margin: 0;
+}
+
+.modalBody strong {
+  color: var(--color-text);
+}
+
+.modalList {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.modalList li {
+  color: var(--color-muted);
+}
+
+.modalList li strong {
+  color: var(--color-text);
+}
+
+.modalBadge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  background: var(--color-accent-dim);
+  border: 1px solid rgba(108, 99, 255, 0.3);
+  color: #A5A0FF;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  margin-top: var(--space-2);
+  align-self: flex-start;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .floatingBadge {
+    animation: none;
+  }
+  .modalOverlay,
+  .modalContent {
+    animation: none;
+  }
+}
+
+/* Mobile responsive */
+@media (max-width: 480px) {
+  .island {
+    padding: var(--space-5) var(--space-4) var(--space-4);
+    border-radius: var(--radius-md);
+  }
+
+  .floatingBadge {
+    margin-top: -32px;
+    padding: 5px 12px;
+  }
+
+  .nav {
+    gap: 6px;
+  }
+
+  .link,
+  .linkButton {
+    font-size: 0.78rem;
+    padding: 3px 5px;
+  }
+
+  .modalContent {
+    padding: var(--space-4);
+  }
+}
