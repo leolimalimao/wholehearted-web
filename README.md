@@ -12,7 +12,7 @@ Uma alternativa pessoal ao Last.fm — com dados próprios, visual próprio e se
 
 Cada usuário tem um perfil público em `/u/[slug]` com seus stats reais: scrobbles registrados, top artistas, top faixas, atividade por hora do dia e evolução ao longo do tempo. O dashboard é acessível por qualquer visitante sem login — o dono do perfil vê um botão de logout e tem acesso ao dashboard completo e interativo.
 
-> ⚠️ O app está em Development Mode no Spotify (limite de 5 usuários). Para testar com sua própria conta, entre em contato.
+> ⚠️ O app está em Development Mode no Spotify (limite de 5 usuários). Para testar com sua própria conta, [solicite liberação pelo LinkedIn](https://www.linkedin.com/in/leonardolimaalves/) ou explore a demonstração pública em [/u/leonardo](https://wholehearted-stats.vercel.app/u/leonardo). Em caso de acessos não autorizados pela API, o app direciona automaticamente para a tela informativa em `/auth/restricted`.
 
 ---
 

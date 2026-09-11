@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import styles from './LoginScreen.module.css';
 
 export function LoginScreen() {
@@ -12,9 +13,15 @@ export function LoginScreen() {
         <p className={styles.subtitle}>scrobbling via spotify</p>
       </div>
 
-      <a href={loginUrl} className={styles.button}>
-        conectar com spotify
-      </a>
+      <div className={styles.actions}>
+        <a href={loginUrl} className={styles.button}>
+          conectar com spotify
+        </a>
+
+        <Link href="/u/leonardo" className={styles.demoLink}>
+          ou explore a demo (/u/leonardo) →
+        </Link>
+      </div>
 
       <p className={styles.note}>
         suas estatísticas de escuta, seus dados, seu controle.
