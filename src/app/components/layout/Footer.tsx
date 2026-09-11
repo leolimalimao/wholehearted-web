@@ -37,12 +37,30 @@ export function Footer() {
     <>
       <footer className={styles.footerWrap}>
         <div className={styles.island}>
-          {/* Badge flutuante: Keep listening */}
-          <div className={styles.floatingBadge}>
+          {/* Keep listening com efeito wave e reticências animadas em 3 frames */}
+          <div
+            className={styles.waveContainer}
+            aria-label="Keep listening..."
+          >
             <span className={styles.musicIcon} aria-hidden="true">
               <MusicNoteIcon />
             </span>
-            <span className={styles.badgeText}>Keep listening.</span>
+            <span className={styles.waveText} aria-hidden="true">
+              {'Keep listening'.split('').map((char, index) => (
+                <span
+                  key={index}
+                  className={styles.waveLetter}
+                  style={{ animationDelay: `${index * 0.08}s` }}
+                >
+                  {char === ' ' ? '\u00A0' : char}
+                </span>
+              ))}
+            </span>
+            <span className={styles.ellipsis} aria-hidden="true">
+              <span className={styles.dot1}>.</span>
+              <span className={styles.dot2}>.</span>
+              <span className={styles.dot3}>.</span>
+            </span>
           </div>
 
           {/* Branding */}

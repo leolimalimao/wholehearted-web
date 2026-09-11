@@ -16,50 +16,20 @@
   text-align: center;
   width: 100%;
   max-width: 580px;
-  padding: var(--space-6) var(--space-6) var(--space-5);
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-lg);
-  box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.45),
-              0 0 40px -10px var(--color-glow-violet);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  padding: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
-.island:hover {
-  border-color: rgba(108, 99, 255, 0.22);
-  box-shadow: 0 20px 44px -12px rgba(0, 0, 0, 0.55),
-              0 0 50px -8px var(--color-glow-violet);
-}
-
-/* Badge flutuante no topo */
-.floatingBadge {
+/* Keep listening sem balão com animação wave */
+.waveContainer {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 14px;
-  border-radius: var(--radius-full);
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  margin-top: -38px;
+  gap: 7px;
   margin-bottom: var(--space-4);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  animation: floatLevitate 5s ease-in-out infinite;
   user-select: none;
-}
-
-@keyframes floatLevitate {
-  0%, 100% {
-    transform: translateY(0);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2), 0 0 12px rgba(108, 99, 255, 0.1);
-  }
-  50% {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25), 0 0 20px rgba(108, 99, 255, 0.2);
-  }
+  cursor: default;
 }
 
 .musicIcon {
@@ -68,14 +38,105 @@
   justify-content: center;
   color: var(--color-accent);
   filter: drop-shadow(0 0 6px var(--color-accent-glow));
+  animation: noteBounce 2.6s ease-in-out infinite;
 }
 
-.badgeText {
+@keyframes noteBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+.waveText {
+  display: inline-flex;
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   font-weight: 500;
   letter-spacing: 0.02em;
+  color: var(--color-muted);
+}
+
+.waveLetter {
+  display: inline-block;
+  animation: letterWave 2.4s ease-in-out infinite;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.waveContainer:hover .waveLetter {
   color: var(--color-text);
+}
+
+@keyframes letterWave {
+  0%, 45%, 100% {
+    transform: translateY(0);
+    color: var(--color-muted);
+  }
+  22% {
+    transform: translateY(-3px);
+    color: var(--color-text);
+    text-shadow: 0 0 10px rgba(108, 99, 255, 0.4);
+  }
+}
+
+/* Reticências animadas em 3 frames: . -> .. -> ... */
+.ellipsis {
+  display: inline-flex;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--color-accent);
+  min-width: 1.2ch;
+  text-align: left;
+}
+
+.dot1,
+.dot2,
+.dot3 {
+  display: inline-block;
+  opacity: 0;
+  animation-duration: 1.6s;
+  animation-iteration-count: infinite;
+  animation-timing-function: steps(1, end);
+}
+
+.dot1 {
+  animation-name: frameDot1;
+}
+
+.dot2 {
+  animation-name: frameDot2;
+}
+
+.dot3 {
+  animation-name: frameDot3;
+}
+
+/* Frame 1: apenas dot1 visível
+   Frame 2: dot1 e dot2 visíveis
+   Frame 3: dot1, dot2 e dot3 visíveis
+   Pausa final antes do próximo ciclo */
+@keyframes frameDot1 {
+  0% { opacity: 1; }
+  75% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+@keyframes frameDot2 {
+  0% { opacity: 0; }
+  25% { opacity: 1; }
+  75% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+@keyframes frameDot3 {
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  75% { opacity: 0; }
+  100% { opacity: 0; }
 }
 
 /* Branding */
@@ -299,8 +360,14 @@
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .floatingBadge {
+  .musicIcon,
+  .waveLetter,
+  .dot1,
+  .dot2,
+  .dot3 {
     animation: none;
+    transform: none;
+    opacity: 1;
   }
   .modalOverlay,
   .modalContent {
@@ -311,13 +378,11 @@
 /* Mobile responsive */
 @media (max-width: 480px) {
   .island {
-    padding: var(--space-5) var(--space-4) var(--space-4);
-    border-radius: var(--radius-md);
+    padding: 0;
   }
 
-  .floatingBadge {
-    margin-top: -32px;
-    padding: 5px 12px;
+  .waveText {
+    font-size: 0.76rem;
   }
 
   .nav {
