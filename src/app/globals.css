@@ -17,8 +17,22 @@
   --color-border:      #1E1E2E;
   --color-accent:      #6C63FF;
   --color-accent-dim:  #6C63FF22;
+  --color-accent-glow: rgba(108, 99, 255, 0.25);
   --color-text:        #E8E8F0;
   --color-muted:       #6B6B80;
+
+  /* Glassmorphism */
+  --glass-bg:          rgba(10, 10, 15, 0.72);
+  --glass-border:      rgba(255, 255, 255, 0.07);
+  --glass-blur:        blur(18px);
+
+  /* Ambient glow palette */
+  --color-glow-violet: rgba(108, 99, 255, 0.18);
+  --color-glow-indigo: rgba(88, 60, 210, 0.12);
+  --color-glow-emerald:rgba(52, 211, 153, 0.07);
+
+  /* Live indicator */
+  --color-live:        #34D399;
 
   --font-display: 'Space Grotesk', sans-serif;
   --font-body:    'Inter', sans-serif;
@@ -27,6 +41,7 @@
   --radius-sm:  6px;
   --radius-md:  12px;
   --radius-lg:  20px;
+  --radius-full: 9999px;
 
   --space-1:  4px;
   --space-2:  8px;
@@ -36,6 +51,8 @@
   --space-6:  32px;
   --space-7:  48px;
   --space-8:  64px;
+
+  --nav-height: 56px;
 }
 
 html, body {

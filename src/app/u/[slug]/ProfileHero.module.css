@@ -1,0 +1,299 @@
+/* =====================================================
+   ProfileHero — Hero musical com identidade do usuário
+   ===================================================== */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* === AMBIENT GLOW (fundo atmosférico) === */
+.ambientGlow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.glowViolet {
+  position: absolute;
+  top: -80px;
+  left: -10%;
+  width: 55%;
+  height: 340px;
+  background: radial-gradient(ellipse at top left, var(--color-glow-violet), transparent 70%);
+  filter: blur(40px);
+}
+
+.glowIndigo {
+  position: absolute;
+  top: -60px;
+  left: 30%;
+  width: 50%;
+  height: 260px;
+  background: radial-gradient(ellipse at top, var(--color-glow-indigo), transparent 70%);
+  filter: blur(50px);
+}
+
+.glowEmerald {
+  position: absolute;
+  top: 0;
+  right: -5%;
+  width: 35%;
+  height: 220px;
+  background: radial-gradient(ellipse at top right, var(--color-glow-emerald), transparent 70%);
+  filter: blur(45px);
+}
+
+/* === CONTEÚDO === */
+.content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: var(--space-7) var(--space-5) var(--space-6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+}
+
+/* === IDENTIDADE (Avatar + Nome) === */
+.identity {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+/* Anel gradiente em volta do avatar */
+.avatarRing {
+  flex-shrink: 0;
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-full);
+  padding: 2px;
+  background: linear-gradient(135deg, #6C63FF 0%, #9B8FFF 50%, #34D399 100%);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.3),
+    0 0 24px -4px rgba(108, 99, 255, 0.5);
+}
+
+/* Interno do avatar: monograma */
+.avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-full);
+  background: var(--color-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  letter-spacing: -0.02em;
+  user-select: none;
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.name {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.slugLine {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1;
+}
+
+.slugBase {
+  color: var(--color-muted);
+}
+
+.slugAccent {
+  color: var(--color-accent);
+}
+
+/* === STATS (Total + Now Playing) === */
+.stats {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-4);
+  flex-shrink: 0;
+}
+
+/* Métrica principal */
+.totalBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.totalNumber {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  font-weight: 700;
+  color: transparent;
+  background: linear-gradient(135deg, #9B8FFF 0%, #6C63FF 55%, #8fbbff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  text-shadow: none;
+}
+
+.totalLabel {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* === WIDGET NOW PLAYING === */
+.nowPlaying {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3) var(--space-2) var(--space-2);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  max-width: 280px;
+}
+
+.nowPlayingEq {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.eqBar {
+  display: block;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--color-accent);
+  animation: eq-dance 1.2s ease-in-out infinite;
+}
+
+.eqBar:nth-child(1) { height: 60%; animation-delay: 0s; }
+.eqBar:nth-child(2) { height: 100%; animation-delay: 0.2s; }
+.eqBar:nth-child(3) { height: 45%; animation-delay: 0.1s; }
+.eqBar:nth-child(4) { height: 80%; animation-delay: 0.3s; }
+
+@keyframes eq-dance {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.35); }
+}
+
+.nowPlayingCover {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.nowPlayingText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0; /* para permitir text-overflow */
+}
+
+.nowPlayingTrack {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
+}
+
+.nowPlayingArtist {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--color-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
+}
+
+/* === DIVISOR INFERIOR === */
+.divider {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    var(--color-border) 20%,
+    var(--color-border) 80%,
+    transparent 100%
+  );
+}
+
+/* === RESPONSIVO === */
+@media (max-width: 768px) {
+  .content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-5);
+    padding: var(--space-6) var(--space-5) var(--space-5);
+  }
+
+  .stats {
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .totalBlock {
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .identity {
+    gap: var(--space-4);
+  }
+
+  .avatarRing {
+    width: 56px;
+    height: 56px;
+  }
+
+  .avatar {
+    font-size: 1.1rem;
+  }
+
+  .nowPlaying {
+    max-width: 100%;
+  }
+}

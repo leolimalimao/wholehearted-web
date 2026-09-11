@@ -35,9 +35,9 @@ export function ActivityHeatmap({ data }: Props) {
           margin={{ top: 10, right: 10, bottom: 30, left: 10 }}
           padding={0.2}
           colors={({ data: d }) => {
-            // intensidade da cor baseada no valor — mais plays = mais vívido
             const intensity = max > 0 ? d.plays / max : 0;
-            const alpha = Math.max(0.15, intensity);
+            // floor baixo (0.06) → muito contraste entre hora vazia e hora de pico
+            const alpha = Math.max(0.06, intensity);
             return `rgba(108, 99, 255, ${alpha})`;
           }}
           borderRadius={3}
