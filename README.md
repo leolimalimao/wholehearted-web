@@ -54,7 +54,7 @@ Todos os gráficos respondem ao seletor de período: `7d` / `30d` / `3m` / `6m` 
 | Framework | Next.js 16 + TypeScript | SSR para Open Graph, App Router, rewrites de proxy |
 | Estilo | CSS Modules + CSS Custom Properties | Zero runtime, escopo por componente, theming nativo |
 | Gráficos | Nivo | D3 encapsulado, visual mais autoral que Recharts |
-| Animações | Framer Motion | Stagger nas barras da waveform, entrada dos cards |
+| Animações | Framer Motion | Stagger nas barras da waveform, 3D tilt com física de mola nos stat cards |
 | Data fetching | TanStack React Query | Cache, staleTime, enabled condicional |
 | Deploy | Vercel | Next.js nativo, Edge Network, Open Graph via ImageResponse |
 

@@ -13,6 +13,8 @@
   background: transparent;
   color: var(--color-muted);
   cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
   transition: all 0.15s ease;
 }
 
