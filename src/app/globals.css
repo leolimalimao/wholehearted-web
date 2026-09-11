@@ -6,6 +6,11 @@
   padding: 0;
 }
 
+::selection {
+  background: rgba(108, 99, 255, 0.35);
+  color: var(--color-text);
+}
+
 :root {
   --color-bg:          #0A0A0F;
   --color-surface:     #13131A;

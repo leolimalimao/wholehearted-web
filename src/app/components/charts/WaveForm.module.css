@@ -5,6 +5,8 @@
   align-items: flex-end;
   gap: 2px;
   margin: var(--space-6) 0;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .bar {

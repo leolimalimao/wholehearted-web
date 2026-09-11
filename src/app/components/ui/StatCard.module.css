@@ -1,31 +1,84 @@
+.perspectiveContainer {
+  perspective: 1000px;
+  position: relative;
+  z-index: 1;
+  height: 100%;
+}
+
+.perspectiveContainer:hover {
+  z-index: 10;
+}
+
 .card {
+  position: relative;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   padding: var(--space-5);
+  height: 100%;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  will-change: transform;
+  transform-style: preserve-3d;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover {
+  border-color: rgba(108, 99, 255, 0.4);
+  box-shadow:
+    0 16px 36px -12px rgba(0, 0, 0, 0.7),
+    0 0 24px -4px rgba(108, 99, 255, 0.16);
+}
+
+.glare {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.card:hover .glare {
+  opacity: 1;
 }
 
 .label {
+  position: relative;
+  z-index: 2;
   font-family: var(--font-mono);
   font-size: 0.7rem;
   color: var(--color-muted);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   margin-bottom: var(--space-2);
+  transform: translateZ(14px);
+  transform-style: preserve-3d;
 }
 
 .value {
+  position: relative;
+  z-index: 2;
   font-family: var(--font-display);
   font-size: 2.5rem;
   font-weight: 700;
   color: var(--color-text);
   line-height: 1;
   letter-spacing: -0.03em;
+  transform: translateZ(28px);
+  transform-style: preserve-3d;
+  text-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
 }
 
 .sub {
+  position: relative;
+  z-index: 2;
   font-family: var(--font-mono);
   font-size: 0.75rem;
   color: var(--color-muted);
   margin-top: var(--space-2);
-}
+  transform: translateZ(16px);
+  transform-style: preserve-3d;
+}
