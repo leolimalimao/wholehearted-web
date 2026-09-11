@@ -12,19 +12,20 @@
 }
 
 :root {
-  --color-bg:          #0A0A0F;
-  --color-surface:     #13131A;
-  --color-border:      #1E1E2E;
+  --color-bg:          #08090D;
+  --color-surface:     rgba(15, 15, 23, 0.55);
+  --color-surface-solid: #13131A;
+  --color-border:      rgba(255, 255, 255, 0.08);
   --color-accent:      #6C63FF;
-  --color-accent-dim:  #6C63FF22;
+  --color-accent-dim:  rgba(108, 99, 255, 0.15);
   --color-accent-glow: rgba(108, 99, 255, 0.25);
   --color-text:        #E8E8F0;
-  --color-muted:       #6B6B80;
+  --color-muted:       #8E8EA0;
 
   /* Glassmorphism */
-  --glass-bg:          rgba(10, 10, 15, 0.72);
-  --glass-border:      rgba(255, 255, 255, 0.07);
-  --glass-blur:        blur(18px);
+  --glass-bg:          rgba(10, 10, 15, 0.55);
+  --glass-border:      rgba(255, 255, 255, 0.09);
+  --glass-blur:        blur(20px);
 
   /* Ambient glow palette */
   --color-glow-violet: rgba(108, 99, 255, 0.18);

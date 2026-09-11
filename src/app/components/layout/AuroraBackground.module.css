@@ -1,0 +1,130 @@
+.auroraContainer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background-color: var(--color-bg, #08090D);
+}
+
+.blobsWrapper {
+  position: absolute;
+  inset: -25%;
+  filter: blur(65px);
+  -webkit-filter: blur(65px);
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  mix-blend-mode: screen;
+  will-change: transform;
+  transform-origin: center center;
+}
+
+/* Blob 1: Violeta Puro Luminous (Identidade do Wholehearted) */
+.blobViolet {
+  width: 65vw;
+  height: 65vh;
+  top: 2%;
+  left: 2%;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.75) 0%, rgba(108, 99, 255, 0.35) 45%, rgba(108, 99, 255, 0) 70%);
+  animation: auroraFloat1 28s ease-in-out infinite alternate;
+}
+
+/* Blob 2: Magenta / Pink Neon Vibrante (Destaque luminoso) */
+.blobMagenta {
+  width: 60vw;
+  height: 60vh;
+  top: 15%;
+  right: 2%;
+  background: radial-gradient(circle, rgba(236, 72, 153, 0.70) 0%, rgba(217, 70, 239, 0.35) 45%, rgba(217, 70, 239, 0) 70%);
+  animation: auroraFloat2 34s ease-in-out infinite alternate;
+}
+
+/* Blob 3: Ciano Elétrico / Sky Neon (Contraste e atmosfera profunda) */
+.blobIndigo {
+  width: 70vw;
+  height: 70vh;
+  bottom: 2%;
+  left: 10%;
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.65) 0%, rgba(59, 130, 246, 0.30) 45%, rgba(59, 130, 246, 0) 70%);
+  animation: auroraFloat3 41s ease-in-out infinite alternate;
+}
+
+/* Blob 4: Esmeralda Spotify (Toque sonoro orgânico) */
+.blobEmerald {
+  width: 55vw;
+  height: 55vh;
+  bottom: 10%;
+  right: 10%;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.45) 0%, rgba(52, 211, 153, 0.20) 45%, rgba(16, 185, 129, 0) 70%);
+  animation: auroraFloat4 31s ease-in-out infinite alternate;
+}
+
+/* Movimentação lenta e orgânica usando GPU Compositor */
+@keyframes auroraFloat1 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(12vw, 8vh, 0) scale(1.15) rotate(45deg);
+  }
+  100% {
+    transform: translate3d(-8vw, 14vh, 0) scale(0.9) rotate(90deg);
+  }
+}
+
+@keyframes auroraFloat2 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(-14vw, -6vh, 0) scale(1.12) rotate(-60deg);
+  }
+  100% {
+    transform: translate3d(-6vw, 10vh, 0) scale(0.95) rotate(-120deg);
+  }
+}
+
+@keyframes auroraFloat3 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(10vw, -12vh, 0) scale(1.18) rotate(30deg);
+  }
+  100% {
+    transform: translate3d(-10vw, -6vh, 0) scale(0.88) rotate(70deg);
+  }
+}
+
+@keyframes auroraFloat4 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(-8vw, 10vh, 0) scale(1.1) rotate(-40deg);
+  }
+  100% {
+    transform: translate3d(12vw, -14vh, 0) scale(0.92) rotate(-80deg);
+  }
+}
+
+/* Overlay de ruído monocromático para evitar banding de gradiente */
+.noiseOverlay {
+  position: absolute;
+  inset: 0;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+/* Acessibilidade: congelar animações quando o usuário preferir menos movimento */
+@media (prefers-reduced-motion: reduce) {
+  .blob {
+    animation: none !important;
+  }
+}

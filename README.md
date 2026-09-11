@@ -74,8 +74,8 @@ As barras do hero não são decorativas — representam scrobbles reais por dia 
 **Open Graph dinâmico por perfil:**
 Cada URL `/u/[slug]` gera uma imagem 1200×630 com stats reais via `next/og` — total de scrobbles, top artista, top faixa e waveform com dados reais. O `generateMetadata` roda no servidor do Next.js via Server Components, sem depender de autenticação.
 
-**`enabled` condicional no React Query:**
-Queries de stats só disparam após o `useAuth` confirmar sessão ativa — evita 401s desnecessários ao carregar a página sem autenticação e elimina o flash de erro antes da LoginScreen aparecer.
+**Por que Animated Aurora Background em CSS puro e Compositor Layer?**
+Para trazer a atmosfera viva de visualização musical orgânica sem o peso de bibliotecas WebGL/Three.js (que acrescentariam dezenas de kilobytes e loops contínuos de `requestAnimationFrame`), o background utiliza 4 blobs com órbitas de tempos primos (26s, 34s, 41s, 31s) animados estritamente via `transform: translate3d(...) rotate(...)` no *compositor thread* da GPU (`will-change: transform`). Isso garante 60–120 FPS cravados sem acionar reflows nem repaints na thread principal de JavaScript, com desligamento automático via `prefers-reduced-motion`. O efeito refrata suavemente através dos cards graças ao glassmorphism (`backdrop-filter: blur(16px)` com preenchimento translúcido).
 
 ---
 
@@ -84,7 +84,7 @@ Queries de stats só disparam após o `useAuth` confirmar sessão ativa — evit
 ```
 src/
   app/
-    layout.tsx          → QueryProvider, metadados globais
+    layout.tsx          → QueryProvider, AuroraBackground, metadados globais
     page.tsx            → raiz: redirect pra /u/[slug] se autenticado
     dashboard.tsx       → verifica auth e redireciona
     og/route.tsx        → imagem Open Graph 1200×630
@@ -93,7 +93,7 @@ src/
       ProfileDashboard  → Client Component: dashboard interativo
       profile.module.css
   components/
-    layout/             → Container, Header, QueryProvider
+    layout/             → AuroraBackground, Container, Header, QueryProvider
     charts/             → Waveform, TopTracksChart, TopArtistsChart,
                           TimelineChart, ActivityHeatmap
     ui/                 → StatCard, TrackRow, RangeSelector,
@@ -109,14 +109,14 @@ src/
 ---
 
 ## Design tokens
-
+ 
 ```css
---color-bg:      #0A0A0F   /* fundo — quase preto com matiz roxo */
---color-surface: #13131A   /* cards e painéis */
---color-border:  #1E1E2E   /* bordas sutis */
+--color-bg:      #08090D   /* fundo escuro profundo */
+--color-surface: rgba(19, 19, 26, 0.70) /* cards e painéis com glassmorphism */
+--color-border:  rgba(255, 255, 255, 0.08) /* bordas de luz sutis */
 --color-accent:  #6C63FF   /* violeta elétrico — destaque principal */
 --color-text:    #E8E8F0   /* texto principal */
---color-muted:   #6B6B80   /* texto secundário, labels */
+--color-muted:   #8E8EA0   /* texto secundário, labels */
 
 --font-display:  'Space Grotesk'   /* números grandes, títulos */
 --font-body:     'Inter'           /* texto corrido */
