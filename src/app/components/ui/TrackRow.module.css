@@ -7,13 +7,27 @@
   -webkit-user-select: none;
 }
 
+/* Cabeçalho com título + contador */
+.header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: var(--space-5);
+}
+
 .title {
   font-family: var(--font-mono);
   font-size: 0.7rem;
   color: var(--color-muted);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  margin-bottom: var(--space-5);
+}
+
+.count {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--color-border);
+  letter-spacing: 0.04em;
 }
 
 .list {
@@ -21,15 +35,19 @@
   flex-direction: column;
 }
 
+/* === LINHA === */
+/* Usamos <a> agora para o link do Spotify */
 .row {
   display: grid;
   grid-template-columns: 24px 56px 1fr auto;
-  align-items: stretch;
+  align-items: center;
   gap: var(--space-4);
-  padding: var(--space-4);
+  padding: var(--space-3) var(--space-4);
   border-bottom: 1px solid var(--color-border);
-  transition: background 0.15s ease;
   border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.15s ease;
 }
 
 .row:last-child {
@@ -38,6 +56,17 @@
 
 .row:hover {
   background: var(--color-accent-dim);
+}
+
+/* Destaque da primeira linha */
+.rowFirst {
+  border-left: 2px solid var(--color-accent);
+  padding-left: calc(var(--space-4) - 2px);
+  background: rgba(108, 99, 255, 0.04);
+}
+
+.rowFirst:hover {
+  background: rgba(108, 99, 255, 0.08);
 }
 
 .rank {
@@ -49,8 +78,8 @@
 
 .coverWrapper {
   position: relative;
-  width: 56px;
-  height: 56px;
+  width: 48px;
+  height: 48px;
   border-radius: var(--radius-sm);
   overflow: hidden;
   background: var(--color-border);
@@ -59,9 +88,8 @@
 }
 
 .row:hover .coverWrapper {
-  transform: scale(1.05);
+  transform: scale(1.06);
   box-shadow: 0 4px 16px rgba(108, 99, 255, 0.3);
-  padding: 2px;
 }
 
 .cover {
@@ -77,27 +105,73 @@
 
 .trackName {
   font-family: var(--font-body);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 500;
   color: var(--color-text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  transition: color 0.15s ease;
+}
+
+.row:hover .trackName {
+  color: #C4BFFF;
 }
 
 .artistName {
   font-family: var(--font-body);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--color-muted);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
+/* === BLOCO DE TEMPO === */
+.timeBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
 .time {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   color: var(--color-muted);
   white-space: nowrap;
-  text-align: right;
+}
+
+/* Badge "ao vivo" — usa a cor --color-live da Fase 1 */
+.liveBadge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-live);
+  background: rgba(52, 211, 153, 0.1);
+  border: 1px solid rgba(52, 211, 153, 0.25);
+  border-radius: var(--radius-full);
+  padding: 2px 8px 2px 5px;
+  white-space: nowrap;
+}
+
+.liveDot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: var(--radius-full);
+  background: var(--color-live);
+  box-shadow: 0 0 5px var(--color-live);
+  animation: pulse-live 1.8s ease-in-out infinite;
+}
+
+@keyframes pulse-live {
+  0%, 100% { opacity: 1; box-shadow: 0 0 5px var(--color-live); }
+  50% { opacity: 0.5; box-shadow: 0 0 10px var(--color-live); }
 }

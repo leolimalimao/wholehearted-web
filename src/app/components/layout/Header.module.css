@@ -1,24 +1,134 @@
 .header {
-  padding: var(--space-6) 0 var(--space-5);
-  border-bottom: 1px solid var(--color-border);
-  margin-bottom: var(--space-6);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: var(--nav-height);
+  background: transparent;
+  transition: background 0.3s ease, border-color 0.3s ease, backdrop-filter 0.3s ease;
+  border-bottom: 1px solid transparent;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
-.title {
+/* Ao rolar: aparece o efeito glassmorphic */
+.header.scrolled {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-bottom-color: var(--glass-border);
+}
+
+.inner {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 var(--space-5);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* --- BRANDING --- */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  text-decoration: none;
+  line-height: 1;
+}
+
+.brandName {
   font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--color-text);
   letter-spacing: -0.02em;
 }
 
-.accent {
+.brandAccent {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
   color: var(--color-accent);
+  letter-spacing: -0.02em;
 }
 
-.subtitle {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
+.statusDot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-live);
+  margin-left: 8px;
+  margin-bottom: 1px;
+  box-shadow: 0 0 6px var(--color-live);
+  animation: pulse-dot 2.8s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; box-shadow: 0 0 6px var(--color-live); }
+  50% { opacity: 0.55; box-shadow: 0 0 12px var(--color-live); }
+}
+
+/* --- ACTIONS --- */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.actionBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.04);
   color: var(--color-muted);
-  margin-top: var(--space-1);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  white-space: nowrap;
+}
+
+.actionBtn:hover {
+  background: rgba(108, 99, 255, 0.1);
+  border-color: rgba(108, 99, 255, 0.35);
+  color: var(--color-text);
+}
+
+.actionBtn:active {
+  transform: scale(0.97);
+}
+
+/* Estado de sucesso (copiado) */
+.actionBtnSuccess {
+  background: rgba(52, 211, 153, 0.1);
+  border-color: rgba(52, 211, 153, 0.4);
+  color: var(--color-live);
+}
+
+.actionBtnSuccess:hover {
+  background: rgba(52, 211, 153, 0.15);
+  border-color: rgba(52, 211, 153, 0.5);
+  color: var(--color-live);
+}
+
+.logoutWrap {
+  display: flex;
+  align-items: center;
+}
+
+/* No logout button, override its visual to match the header action style via composition */
+@media (max-width: 480px) {
+  .actionBtn span {
+    display: none;
+  }
+  .actionBtn {
+    padding: 6px 8px;
+  }
 }

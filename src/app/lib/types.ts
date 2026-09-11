@@ -31,6 +31,7 @@ export interface DowActivity {
 
 export interface Scrobble {
   id: string;
+  trackSpotifyId: string;
   trackName: string;
   artistName: string;
   albumName: string;

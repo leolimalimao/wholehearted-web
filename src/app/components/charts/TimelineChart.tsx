@@ -15,7 +15,7 @@ export function TimelineChart({ data }: Props) {
     {
       id: 'scrobbles',
       data: data.map((d) => ({
-        x: d.date.slice(0, 10), // só a data, sem hora
+        x: d.date.slice(0, 10),
         y: parseInt(d.plays),
       })),
     },
@@ -32,11 +32,23 @@ export function TimelineChart({ data }: Props) {
           xScale={{ type: 'point' }}
           yScale={{ type: 'linear', min: 0, stacked: false }}
           curve="monotoneX"
-          colors={['#6C63FF']}
-          lineWidth={2}
+          /* gradiente vertical sob a linha via defs SVG */
+          defs={[
+            {
+              id: 'area-gradient',
+              type: 'linearGradient',
+              colors: [
+                { offset: 0,   color: '#6C63FF', opacity: 0.35 },
+                { offset: 100, color: '#6C63FF', opacity: 0 },
+              ],
+            },
+          ]}
+          fill={[{ match: '*', id: 'area-gradient' }]}
+          colors={['#8680FF']}
+          lineWidth={2.5}
           enablePoints={false}
           enableArea={true}
-          areaOpacity={0.08}
+          areaOpacity={1} // controlado pelo gradiente acima
           axisBottom={{
             tickSize: 0,
             tickPadding: 10,
@@ -59,23 +71,24 @@ export function TimelineChart({ data }: Props) {
           gridYValues={4}
           enableGridX={false}
           useMesh={true}
+          crosshairType="bottom"
           tooltip={({ point }) => (
             <div style={{
               background: '#13131A',
-              border: '1px solid #6C63FF44',
+              border: '1px solid rgba(108,99,255,0.3)',
               borderRadius: 8,
               padding: '10px 14px',
               fontFamily: 'var(--font-mono)',
               fontSize: 12,
               color: '#E8E8F0',
               minWidth: 140,
-              boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.5)',
               display: 'flex',
               flexDirection: 'column',
               gap: 4,
             }}>
               <span style={{ color: '#6B6B80' }}>{String(point.data.x)}</span>
-              <span style={{ color: '#6C63FF', fontSize: 15, fontWeight: 600 }}>
+              <span style={{ color: '#9B8FFF', fontSize: 15, fontWeight: 600 }}>
                 {String(point.data.y)} plays
               </span>
             </div>
@@ -87,6 +100,13 @@ export function TimelineChart({ data }: Props) {
             axis: {
               ticks: {
                 text: { fill: '#6B6B80', fontSize: 11, fontFamily: 'JetBrains Mono' },
+              },
+            },
+            crosshair: {
+              line: {
+                stroke: '#6C63FF',
+                strokeWidth: 1,
+                strokeOpacity: 0.4,
               },
             },
           }}

@@ -4,8 +4,9 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { TimeRange } from "../../lib/types";
 import { api } from "../../lib/api";
-import { useAuth } from "../../hooks/useAuth";
 import { Container } from "../../components/layout/Container";
+import { Header } from "../../components/layout/Header";
+import { ProfileHero } from "./ProfileHero";
 import { RangeSelector } from "../../components/ui/RangeSelector";
 import { StatCard } from "../../components/ui/StatCard";
 import { ActivityCalendar, ActivityCalendarSkeleton } from "../../components/charts/ActivityCalendar";
@@ -14,11 +15,9 @@ import { TopArtistsChart } from "../../components/charts/TopArtistsChart";
 import { TimelineChart } from "../../components/charts/TimelineChart";
 import { ActivityHeatmap } from "../../components/charts/ActivityHeatmap";
 import { TrackRow } from "../../components/ui/TrackRow";
-import { LogoutButton } from "../../components/ui/LogoutButton";
 import { ChartSkeleton } from "../../components/charts/ChartSkeleton";
 import { TrackRowSkeleton } from "../../components/ui/TrackRowSkeleton";
 import { TopArtistsSkeleton } from "../../components/charts/TopArtistsSkeleton";
-import { Skeleton } from "../../components/ui/Skeleton";
 import styles from "./profile.module.css";
 
 interface Props {
@@ -28,8 +27,6 @@ interface Props {
 
 export function ProfileDashboard({ slug, displayName }: Props) {
   const [range, setRange] = useState<TimeRange>("month");
-  const { data: auth } = useAuth();
-  const isOwner = auth?.authenticated && auth.slug === slug;
 
   const { data, isLoading: overviewLoading } = useQuery({
     queryKey: ["public-overview", slug, range],
@@ -53,47 +50,45 @@ export function ProfileDashboard({ slug, displayName }: Props) {
 
   const calendarLoading = overviewLoading || timelineLoading;
 
+  // Média diária: total / quantidade de dias com atividade no período
+  // Usa perDay para o span real em vez de hardcodar os dias do range
+  const dailyAvg = (() => {
+    if (!data?.total || !data?.perDay?.length) return undefined;
+    const rangeDays: Record<TimeRange, number> = {
+      week: 7, month: 30, '3months': 90, '6months': 180, year: 365, all: 0,
+    };
+    const days = range === 'all'
+      ? data.perDay.length  // usa a janela real de dias com scrobbles
+      : rangeDays[range];
+    if (!days) return undefined;
+    return Math.round(data.total / days);
+  })();
+
   return (
     <>
-      <div className={styles.hero}>
-        <Container>
-          <div className={styles.heroTop}>
-            <div>
-              <h1 className={styles.name}>{displayName}</h1>
-              <p className={styles.slugLine}>
-                wholehearted.stats
-                <span className={styles.accent}>/u/{slug}</span>
-              </p>
-            </div>
-            {isOwner && <LogoutButton />}
-          </div>
+      {/* Header glassmorphic com branding e ações */}
+      <Header slug={slug} />
 
-          <div className={styles.total}>
-            {overviewLoading ? (
-              <Skeleton height="3rem" width="120px" />
-            ) : (
-              <>
-                <span className={styles.totalNumber}>
-                  {data?.total.toLocaleString("pt-BR")}
-                </span>
-                <span className={styles.totalLabel}>scrobbles</span>
-              </>
-            )}
-          </div>
-        </Container>
-      </div>
+      {/* Hero musical: avatar, iluminação atmosférica, total + last played */}
+      <ProfileHero
+        displayName={displayName}
+        slug={slug}
+        totalScrobbles={data?.total}
+        recent={recent}
+        isLoading={overviewLoading || recentLoading}
+      />
 
       <Container>
+        {/* Seletor de período */}
         <section className={styles.controls}>
           <RangeSelector value={range} onChange={setRange} />
         </section>
 
-        {/* stat cards */}
         <section className={styles.statGrid}>
           <StatCard
-            label="scrobbles"
-            value={data?.total.toLocaleString("pt-BR")}
-            sub="no período selecionado"
+            label="média diária"
+            value={dailyAvg !== undefined ? `${dailyAvg.toLocaleString('pt-BR')}` : undefined}
+            sub="plays por dia no período"
             isLoading={overviewLoading}
           />
           <StatCard
