@@ -178,4 +178,4 @@ Acessa `http://127.0.0.1:3000`.
 | Frontend | Vercel | https://spotify-lastfm-web.vercel.app |
 | Backend | Railway | https://spotify-lastfm-api-production.up.railway.app |
 | Banco de dados | Neon (PostgreSQL) | — |
-| Cache / Filas | Upstash (Redis) | — |
+| Cache / Filas | Railway (Redis) | — |
