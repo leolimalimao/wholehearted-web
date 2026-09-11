@@ -77,6 +77,9 @@ Cada URL `/u/[slug]` gera uma imagem 1200×630 com stats reais via `next/og` —
 **Por que Animated Aurora Background em CSS puro e Compositor Layer?**
 Para trazer a atmosfera viva de visualização musical orgânica sem o peso de bibliotecas WebGL/Three.js (que acrescentariam dezenas de kilobytes e loops contínuos de `requestAnimationFrame`), o background utiliza 4 blobs com órbitas de tempos primos (26s, 34s, 41s, 31s) animados estritamente via `transform: translate3d(...) rotate(...)` no *compositor thread* da GPU (`will-change: transform`). Isso garante 60–120 FPS cravados sem acionar reflows nem repaints na thread principal de JavaScript, com desligamento automático via `prefers-reduced-motion`. O efeito refrata suavemente através dos cards graças ao glassmorphism (`backdrop-filter: blur(16px)` com preenchimento translúcido).
 
+**Sincronização de Presença: Online vs. Último Tocado (Heurística de 10 minutos):**
+Para evitar a ilusão de que a música está "tocando agora" quando foi ouvida há horas, o app adota uma heurística determinística sobre o `playedAt` do scrobble mais recente: se $\Delta t < 10\text{ minutos}$, o perfil é considerado **online** (bolinha do Header verde pulsante e equalizador do Hero animado). Se $\Delta t \ge 10\text{ minutos}$, o estado transiciona para **offline** (bolinha cinza apagada, barras do equalizador estáticas e indicação contextual de "último som · há X tempo"). Essa abordagem protege o rate limit da Spotify API contra consultas contínuas de player e acomoda a duração média das faixas somada ao ciclo de sincronização do BullMQ (3 min) no backend.
+
 ---
 
 ## Estrutura

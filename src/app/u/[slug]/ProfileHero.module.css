@@ -204,14 +204,28 @@
 .eqBar:nth-child(3) { height: 45%; animation-delay: 0.1s; }
 .eqBar:nth-child(4) { height: 80%; animation-delay: 0.3s; }
 
+.eqBarStatic {
+  display: block;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--color-muted);
+  opacity: 0.45;
+  animation: none;
+}
+
+.eqBarStatic:nth-child(1) { height: 40%; }
+.eqBarStatic:nth-child(2) { height: 60%; }
+.eqBarStatic:nth-child(3) { height: 30%; }
+.eqBarStatic:nth-child(4) { height: 50%; }
+
 @keyframes eq-dance {
   0%, 100% { transform: scaleY(1); }
   50% { transform: scaleY(0.35); }
 }
 
 .nowPlayingCover {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border-radius: var(--radius-sm);
   object-fit: cover;
   flex-shrink: 0;
@@ -220,8 +234,25 @@
 .nowPlayingText {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
   min-width: 0; /* para permitir text-overflow */
+}
+
+.nowPlayingStatus {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+  text-transform: lowercase;
+}
+
+.statusOnline {
+  color: var(--color-live);
+}
+
+.statusOffline {
+  color: var(--color-muted);
+  opacity: 0.8;
 }
 
 .nowPlayingTrack {

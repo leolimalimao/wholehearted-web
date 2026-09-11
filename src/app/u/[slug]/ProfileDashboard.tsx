@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { TimeRange } from "../../lib/types";
 import { api } from "../../lib/api";
+import { isPlaybackActive } from "../../lib/scrobble-status";
 import { Container } from "../../components/layout/Container";
 import { Header } from "../../components/layout/Header";
 import { ProfileHero } from "./ProfileHero";
@@ -64,10 +65,12 @@ export function ProfileDashboard({ slug, displayName }: Props) {
     return Math.round(data.total / days);
   })();
 
+  const isOnline = isPlaybackActive(recent?.[0]?.playedAt);
+
   return (
     <>
       {/* Header glassmorphic com branding e ações */}
-      <Header slug={slug} />
+      <Header slug={slug} isOnline={isOnline} />
 
       {/* Hero musical: avatar, iluminação atmosférica, total + last played */}
       <ProfileHero

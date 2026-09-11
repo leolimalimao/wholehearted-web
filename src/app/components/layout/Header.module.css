@@ -59,11 +59,22 @@
   width: 6px;
   height: 6px;
   border-radius: var(--radius-full);
-  background-color: var(--color-live);
   margin-left: 8px;
   margin-bottom: 1px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+}
+
+.statusDotOnline {
+  background-color: var(--color-live);
   box-shadow: 0 0 6px var(--color-live);
   animation: pulse-dot 2.8s ease-in-out infinite;
+}
+
+.statusDotOffline {
+  background-color: var(--color-muted);
+  opacity: 0.35;
+  box-shadow: none;
+  animation: none;
 }
 
 @keyframes pulse-dot {

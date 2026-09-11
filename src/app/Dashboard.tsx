@@ -9,6 +9,7 @@ import {
 } from "./hooks/useStats";
 import { useAuth } from "./hooks/useAuth";
 import { TimeRange } from "./lib/types";
+import { isPlaybackActive } from "./lib/scrobble-status";
 import { Container } from "./components/layout/Container";
 import { Header } from "./components/layout/Header";
 import { RangeSelector } from "./components/ui/RangeSelector";
@@ -43,9 +44,11 @@ export function Dashboard() {
   if (authLoading) return <LoadingScreen message="verificando sessão..." />;
   if (!auth?.authenticated) return <LoginScreen />;
 
+  const isOnline = isPlaybackActive(recent?.[0]?.playedAt);
+
   return (
     <>
-      <Header />
+      <Header isOnline={isOnline} />
       <Container>
         <section className={styles.controls}>
           <RangeSelector value={range} onChange={setRange} />

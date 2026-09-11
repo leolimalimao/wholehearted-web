@@ -7,9 +7,10 @@ import styles from './Header.module.css';
 
 interface HeaderProps {
   slug?: string; // quando presente, exibe ações de perfil
+  isOnline?: boolean;
 }
 
-export function Header({ slug }: HeaderProps) {
+export function Header({ slug, isOnline = false }: HeaderProps) {
   const { data: auth } = useAuth();
   const isOwner = auth?.authenticated && auth.slug === slug;
   const [copied, setCopied] = useState(false);
@@ -38,7 +39,11 @@ export function Header({ slug }: HeaderProps) {
         <a className={styles.brand} href="/" aria-label="Voltar ao início">
           <span className={styles.brandName}>wholehearted</span>
           <span className={styles.brandAccent}>.stats</span>
-          <span className={styles.statusDot} title="Sincronizado" aria-hidden="true" />
+          <span
+            className={`${styles.statusDot} ${isOnline ? styles.statusDotOnline : styles.statusDotOffline}`}
+            title={isOnline ? 'Online — ouvindo agora' : 'Offline — sem reprodução ativa'}
+            aria-hidden="true"
+          />
         </a>
 
         {/* Actions */}

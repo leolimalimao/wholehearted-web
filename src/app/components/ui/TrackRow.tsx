@@ -2,32 +2,11 @@
 
 import Image from 'next/image';
 import { Scrobble } from '../../lib/types';
+import { isPlaybackActive, formatRelativeTime } from '../../lib/scrobble-status';
 import styles from './TrackRow.module.css';
 
 interface Props {
   scrobbles: Scrobble[];
-}
-
-function formatDate(iso: string): { label: string; isNow: boolean } {
-  const date = new Date(iso);
-  const now = new Date();
-  const diffMs = now.getTime() - date.getTime();
-  const diffMin = Math.floor(diffMs / 60000);
-  const diffH = Math.floor(diffMin / 60);
-
-  if (diffMin < 2) return { label: 'agora', isNow: true };
-  if (diffMin < 60) return { label: `${diffMin}min atrás`, isNow: false };
-  if (diffH < 24) return { label: `${diffH}h atrás`, isNow: false };
-
-  return {
-    label: date.toLocaleDateString('pt-BR', {
-      day: '2-digit',
-      month: 'short',
-      hour: '2-digit',
-      minute: '2-digit',
-    }),
-    isNow: false,
-  };
 }
 
 export function TrackRow({ scrobbles }: Props) {
@@ -39,9 +18,10 @@ export function TrackRow({ scrobbles }: Props) {
       </div>
       <div className={styles.list}>
         {scrobbles.map((s, i) => {
-          const { label, isNow } = formatDate(s.playedAt);
-          const spotifyUrl = `https://open.spotify.com/track/${s.trackSpotifyId}`;
+          const label = formatRelativeTime(s.playedAt);
           const isFirst = i === 0;
+          const isNow = isFirst && isPlaybackActive(s.playedAt);
+          const spotifyUrl = `https://open.spotify.com/track/${s.trackSpotifyId}`;
 
           return (
             <a

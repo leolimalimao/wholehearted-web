@@ -1,6 +1,7 @@
 'use client';
 
 import { Scrobble } from '../../lib/types';
+import { isPlaybackActive, formatRelativeTime } from '../../lib/scrobble-status';
 import styles from './ProfileHero.module.css';
 import { Skeleton } from '../../components/ui/Skeleton';
 
@@ -14,6 +15,8 @@ interface Props {
 
 export function ProfileHero({ displayName, slug, totalScrobbles, recent, isLoading }: Props) {
   const latestScrobble = recent?.[0];
+  const isOnline = latestScrobble ? isPlaybackActive(latestScrobble.playedAt) : false;
+  const relativeTime = latestScrobble ? formatRelativeTime(latestScrobble.playedAt) : '';
 
   // Gera as iniciais para o avatar monograma
   const initials = displayName
@@ -64,14 +67,17 @@ export function ProfileHero({ displayName, slug, totalScrobbles, recent, isLoadi
             )}
           </div>
 
-          {/* Widget: Última faixa ouvida */}
+          {/* Widget: Última faixa ouvida ou tocando agora */}
           {latestScrobble && (
-            <div className={styles.nowPlaying} aria-label="Última faixa ouvida">
+            <div
+              className={styles.nowPlaying}
+              aria-label={isOnline ? 'Ouvindo agora' : `Último som ouvido ${relativeTime}`}
+            >
               <div className={styles.nowPlayingEq} aria-hidden="true">
-                <span className={styles.eqBar} />
-                <span className={styles.eqBar} />
-                <span className={styles.eqBar} />
-                <span className={styles.eqBar} />
+                <span className={isOnline ? styles.eqBar : styles.eqBarStatic} />
+                <span className={isOnline ? styles.eqBar : styles.eqBarStatic} />
+                <span className={isOnline ? styles.eqBar : styles.eqBarStatic} />
+                <span className={isOnline ? styles.eqBar : styles.eqBarStatic} />
               </div>
               {latestScrobble.albumImageUrl && (
                 <img
@@ -82,6 +88,11 @@ export function ProfileHero({ displayName, slug, totalScrobbles, recent, isLoadi
                 />
               )}
               <div className={styles.nowPlayingText}>
+                <span
+                  className={`${styles.nowPlayingStatus} ${isOnline ? styles.statusOnline : styles.statusOffline}`}
+                >
+                  {isOnline ? 'ouvindo agora' : `último som · ${relativeTime}`}
+                </span>
                 <span className={styles.nowPlayingTrack}>{latestScrobble.trackName}</span>
                 <span className={styles.nowPlayingArtist}>{latestScrobble.artistName}</span>
               </div>
