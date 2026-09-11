@@ -1,0 +1,226 @@
+/* --- BRAND CONTAINER --- */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* --- SÍMBOLO: CORAÇÃO + WAVEFORM --- */
+.symbolWrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+}
+
+/* Coração em repouso */
+.heartIcon {
+  display: block;
+  transform-origin: center;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease;
+}
+
+.heartPath {
+  fill: transparent;
+  stroke: var(--color-muted);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: fill 0.3s ease, stroke 0.3s ease;
+}
+
+/* Coração no Hover */
+.brand:hover .heartIcon {
+  animation: heartPulse 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.brand:hover .heartPath {
+  fill: url(#heartGradient);
+  stroke: #A78BFA;
+}
+
+@keyframes heartPulse {
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 transparent);
+  }
+  35% {
+    transform: scale(1.22);
+    filter: drop-shadow(0 0 10px rgba(167, 139, 250, 0.75));
+  }
+  65% {
+    transform: scale(0.96);
+    filter: drop-shadow(0 0 5px rgba(108, 99, 255, 0.4));
+  }
+  100% {
+    transform: scale(1.08);
+    filter: drop-shadow(0 0 8px rgba(108, 99, 255, 0.6));
+  }
+}
+
+/* --- MICRO-WAVEFORM MUSICAL --- */
+.waveform {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 12px;
+  opacity: 0.35;
+  transition: opacity 0.25s ease;
+}
+
+.waveBar {
+  width: 2px;
+  border-radius: 1px;
+  background-color: var(--color-muted);
+  transform-origin: bottom;
+  transition: background-color 0.25s ease, height 0.25s ease;
+}
+
+.bar1 { height: 4px; }
+.bar2 { height: 8px; }
+.bar3 { height: 5px; }
+
+.brand:hover .waveform {
+  opacity: 1;
+}
+
+.brand:hover .waveBar {
+  background-color: var(--color-accent);
+}
+
+.brand:hover .bar1 {
+  animation: waveBarBounce 0.65s ease-in-out infinite alternate;
+  animation-delay: 0.05s;
+}
+
+.brand:hover .bar2 {
+  animation: waveBarBounce 0.65s ease-in-out infinite alternate;
+  animation-delay: 0.25s;
+}
+
+.brand:hover .bar3 {
+  animation: waveBarBounce 0.65s ease-in-out infinite alternate;
+  animation-delay: 0.45s;
+}
+
+@keyframes waveBarBounce {
+  0% {
+    height: 3px;
+  }
+  50% {
+    height: 12px;
+  }
+  100% {
+    height: 6px;
+  }
+}
+
+/* --- TEXTO & ANIMAÇÃO STAGGERED WAVE --- */
+.textWrap {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0;
+  line-height: 1;
+}
+
+.brandName {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+  display: inline-flex;
+}
+
+.brandAccent {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  letter-spacing: -0.02em;
+  display: inline-flex;
+}
+
+.char {
+  display: inline-block;
+  will-change: transform, color, text-shadow;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.brand:hover .char {
+  animation: letterWave 0.28s ease forwards;
+  animation-delay: calc(var(--char-index) * 20ms);
+}
+
+@keyframes letterWave {
+  0% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-2.5px);
+    color: #FFFFFF;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.75);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* --- STATUS DOT (INDICADOR DE REPRODUÇÃO) --- */
+.statusDot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  margin-left: 2px;
+  margin-bottom: 1px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+}
+
+.statusDotOnline {
+  background-color: var(--color-live);
+  box-shadow: 0 0 6px var(--color-live);
+  animation: pulse-dot 2.8s ease-in-out infinite;
+}
+
+.statusDotOffline {
+  background-color: var(--color-muted);
+  opacity: 0.35;
+  box-shadow: none;
+  animation: none;
+}
+
+@keyframes pulse-dot {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 6px var(--color-live);
+  }
+  50% {
+    opacity: 0.55;
+    box-shadow: 0 0 12px var(--color-live);
+  }
+}
+
+/* --- PREFERS-REDUCED-MOTION --- */
+@media (prefers-reduced-motion: reduce) {
+  .heartIcon,
+  .brand:hover .heartIcon,
+  .bar1,
+  .bar2,
+  .bar3,
+  .brand:hover .bar1,
+  .brand:hover .bar2,
+  .brand:hover .bar3,
+  .char,
+  .brand:hover .char,
+  .statusDotOnline {
+    animation: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

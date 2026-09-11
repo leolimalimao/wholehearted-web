@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../hooks/useAuth';
+import { BrandLogo } from './BrandLogo';
 import { LogoutButton } from '../ui/LogoutButton';
 import styles from './Header.module.css';
 
@@ -36,15 +37,7 @@ export function Header({ slug, isOnline = false }: HeaderProps) {
     <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}>
       <div className={styles.inner}>
         {/* Branding */}
-        <a className={styles.brand} href="/" aria-label="Voltar ao início">
-          <span className={styles.brandName}>wholehearted</span>
-          <span className={styles.brandAccent}>.stats</span>
-          <span
-            className={`${styles.statusDot} ${isOnline ? styles.statusDotOnline : styles.statusDotOffline}`}
-            title={isOnline ? 'Online — ouvindo agora' : 'Offline — sem reprodução ativa'}
-            aria-hidden="true"
-          />
-        </a>
+        <BrandLogo isOnline={isOnline} />
 
         {/* Actions */}
         {slug && (
