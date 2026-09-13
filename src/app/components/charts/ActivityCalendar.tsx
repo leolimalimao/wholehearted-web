@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { DayActivity } from '../../lib/types';
 import { Skeleton } from '../ui/Skeleton';
 import styles from './ActivityCalendar.module.css';
@@ -88,7 +88,7 @@ export function ActivityCalendar({ data, isLoading }: Props) {
   }, [data]);
 
   // Monta a grade de 52 semanas completas (~1 ano até hoje, estilo GitHub)
-  const { weeks, monthLabels, totalWindowPlays } = useMemo(() => {
+  const { weeks, monthLabels, totalWindowPlays, targetWeekIndex } = useMemo(() => {
     const now = new Date();
     // Normaliza hoje à meia-noite local
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -171,12 +171,43 @@ export function ActivityCalendar({ data, isLoading }: Props) {
       cols.push(currentWeek);
     }
 
+    // Determina a coluna com a última atividade registrada (ou fallback para hoje)
+    let lastActiveIdx = -1;
+    for (let i = cols.length - 1; i >= 0; i--) {
+      if (cols[i].some((cell) => cell.isWithinWindow && cell.plays > 0)) {
+        lastActiveIdx = i;
+        break;
+      }
+    }
+    const targetWeekIndex = lastActiveIdx !== -1 ? lastActiveIdx : Math.max(0, cols.length - 1);
+
     return {
       weeks: cols,
       monthLabels: months,
       totalWindowPlays: windowSum,
+      targetWeekIndex,
     };
   }, [playsMap]);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const targetCol = container.querySelector<HTMLElement>('[data-target-week="true"]');
+    if (!targetCol) return;
+
+    const containerRect = container.getBoundingClientRect();
+    const targetRect = targetCol.getBoundingClientRect();
+    const diffX =
+      targetRect.left + targetRect.width / 2 - (containerRect.left + containerRect.width / 2);
+
+    container.scrollTo({
+      left: Math.max(0, container.scrollLeft + diffX),
+      behavior: 'instant',
+    });
+  }, [targetWeekIndex]);
 
   const handleMouseEnter = (cell: DayCell, e: React.MouseEvent<HTMLDivElement>) => {
     if (!cell.isWithinWindow) return;
@@ -209,7 +240,7 @@ export function ActivityCalendar({ data, isLoading }: Props) {
         </span>
       </div>
 
-      <div className={styles.calendarContainer}>
+      <div ref={containerRef} className={styles.calendarContainer}>
         <div className={styles.calendarGrid}>
           {/* Labels dos dias da semana (GitHub exibe Seg, Qua, Sex) */}
           <div className={styles.dayLabels}>
@@ -227,9 +258,14 @@ export function ActivityCalendar({ data, isLoading }: Props) {
             {weeks.map((week, wIdx) => {
               // Verifica se tem rótulo de mês nessa coluna
               const month = monthLabels.find((m) => m.colIndex === wIdx);
+              const isTarget = wIdx === targetWeekIndex;
 
               return (
-                <div key={wIdx} className={styles.weekColumn}>
+                <div
+                  key={wIdx}
+                  className={styles.weekColumn}
+                  data-target-week={isTarget ? 'true' : undefined}
+                >
                   <div className={styles.monthLabel}>
                     {month ? month.label : ''}
                   </div>
