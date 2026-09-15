@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { Scrobble } from '../../lib/types';
 import { isPlaybackActive, formatRelativeTime } from '../../lib/scrobble-status';
 import styles from './ProfileHero.module.css';
@@ -17,6 +18,9 @@ export function ProfileHero({ displayName, slug, totalScrobbles, recent, isLoadi
   const latestScrobble = recent?.[0];
   const isOnline = latestScrobble ? isPlaybackActive(latestScrobble.playedAt) : false;
   const relativeTime = latestScrobble ? formatRelativeTime(latestScrobble.playedAt) : '';
+  const spotifyUrl = latestScrobble?.trackSpotifyId
+    ? `https://open.spotify.com/track/${latestScrobble.trackSpotifyId}`
+    : undefined;
 
   // Gera as iniciais para o avatar monograma
   const initials = displayName
@@ -69,9 +73,12 @@ export function ProfileHero({ displayName, slug, totalScrobbles, recent, isLoadi
 
           {/* Widget: Última faixa ouvida ou tocando agora */}
           {latestScrobble && (
-            <div
+            <a
+              href={spotifyUrl}
+              target={spotifyUrl ? '_blank' : undefined}
+              rel={spotifyUrl ? 'noopener noreferrer' : undefined}
               className={styles.nowPlaying}
-              aria-label={isOnline ? 'Ouvindo agora' : `Último som ouvido ${relativeTime}`}
+              aria-label={`Abrir ${latestScrobble.trackName} de ${latestScrobble.artistName} no Spotify (${isOnline ? 'ouvindo agora' : `último som · ${relativeTime}`})`}
             >
               <div className={styles.nowPlayingEq} aria-hidden="true">
                 <span className={isOnline ? styles.eqBar : styles.eqBarStatic} />
@@ -80,11 +87,13 @@ export function ProfileHero({ displayName, slug, totalScrobbles, recent, isLoadi
                 <span className={isOnline ? styles.eqBar : styles.eqBarStatic} />
               </div>
               {latestScrobble.albumImageUrl && (
-                <img
+                <Image
                   src={latestScrobble.albumImageUrl}
                   alt={`${latestScrobble.trackName} — ${latestScrobble.artistName}`}
+                  width={40}
+                  height={40}
                   className={styles.nowPlayingCover}
-                  loading="lazy"
+                  unoptimized
                 />
               )}
               <div className={styles.nowPlayingText}>
@@ -96,7 +105,7 @@ export function ProfileHero({ displayName, slug, totalScrobbles, recent, isLoadi
                 <span className={styles.nowPlayingTrack}>{latestScrobble.trackName}</span>
                 <span className={styles.nowPlayingArtist}>{latestScrobble.artistName}</span>
               </div>
-            </div>
+            </a>
           )}
 
           {/* Skeleton enquanto carrega o recent */}
