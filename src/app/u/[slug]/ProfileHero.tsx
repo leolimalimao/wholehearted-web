@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Image from 'next/image';
 import { Scrobble } from '../../lib/types';
 import { isPlaybackActive, formatRelativeTime } from '../../lib/scrobble-status';
@@ -9,12 +10,14 @@ import { Skeleton } from '../../components/ui/Skeleton';
 interface Props {
   displayName: string;
   slug: string;
+  avatarUrl?: string | null;
   totalScrobbles?: number;
   recent?: Scrobble[];
   isLoading?: boolean;
 }
 
-export function ProfileHero({ displayName, slug, totalScrobbles, recent, isLoading }: Props) {
+export function ProfileHero({ displayName, slug, avatarUrl, totalScrobbles, recent, isLoading }: Props) {
+  const [imgError, setImgError] = useState(false);
   const latestScrobble = recent?.[0];
   const isOnline = latestScrobble ? isPlaybackActive(latestScrobble.playedAt) : false;
   const relativeTime = latestScrobble ? formatRelativeTime(latestScrobble.playedAt) : '';
@@ -22,13 +25,15 @@ export function ProfileHero({ displayName, slug, totalScrobbles, recent, isLoadi
     ? `https://open.spotify.com/track/${latestScrobble.trackSpotifyId}`
     : undefined;
 
-  // Gera as iniciais para o avatar monograma
+  // Gera as iniciais para o avatar monograma (fallback gracioso)
   const initials = displayName
     .split(' ')
     .slice(0, 2)
     .map((w) => w[0])
     .join('')
     .toUpperCase();
+
+  const showImage = Boolean(avatarUrl && !imgError);
 
   return (
     <section className={styles.hero} aria-label="Perfil do ouvinte">
@@ -43,7 +48,21 @@ export function ProfileHero({ displayName, slug, totalScrobbles, recent, isLoadi
         {/* Avatar + Identidade */}
         <div className={styles.identity}>
           <div className={styles.avatarRing} aria-hidden="true">
-            <div className={styles.avatar}>{initials}</div>
+            <div className={styles.avatar}>
+              {showImage ? (
+                <Image
+                  src={avatarUrl!}
+                  alt={`Foto de perfil de ${displayName}`}
+                  width={72}
+                  height={72}
+                  className={styles.avatarImg}
+                  onError={() => setImgError(true)}
+                  priority
+                />
+              ) : (
+                initials
+              )}
+            </div>
           </div>
 
           <div className={styles.meta}>

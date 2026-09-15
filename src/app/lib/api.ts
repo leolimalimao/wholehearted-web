@@ -43,7 +43,7 @@ export const api = {
     fetcher<Scrobble[]>(`/stats/recent?limit=${limit}`),
 
   publicProfile: (slug: string) =>
-    fetcher<{ slug: string; displayName: string; total: number; topTracks: TopTrack[]; topArtists: TopArtist[] }>(
+    fetcher<{ slug: string; displayName: string; avatarUrl?: string | null; total: number; topTracks: TopTrack[]; topArtists: TopArtist[] }>(
       `/public/profile/${slug}`
     ),
 

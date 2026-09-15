@@ -7,6 +7,7 @@ const API = process.env.NEXT_PUBLIC_API_URL;
 interface ProfileData {
   slug: string;
   displayName: string;
+  avatarUrl?: string | null;
   total: number;
   topTracks: { trackSpotifyId: string; trackName: string; artistName: string; plays: string }[];
   topArtists: { artistName: string; plays: string }[];
@@ -69,6 +70,7 @@ export default async function ProfilePage(
     <ProfileDashboard
       slug={profile.slug}
       displayName={profile.displayName}
+      avatarUrl={profile.avatarUrl}
     />
   );
 }

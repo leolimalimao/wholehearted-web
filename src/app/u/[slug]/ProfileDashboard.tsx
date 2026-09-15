@@ -24,9 +24,10 @@ import styles from "./profile.module.css";
 interface Props {
   slug: string;
   displayName: string;
+  avatarUrl?: string | null;
 }
 
-export function ProfileDashboard({ slug, displayName }: Props) {
+export function ProfileDashboard({ slug, displayName, avatarUrl }: Props) {
   const [range, setRange] = useState<TimeRange>("month");
 
   const { data, isLoading: overviewLoading } = useQuery({
@@ -76,6 +77,7 @@ export function ProfileDashboard({ slug, displayName }: Props) {
       <ProfileHero
         displayName={displayName}
         slug={slug}
+        avatarUrl={avatarUrl}
         totalScrobbles={data?.total}
         recent={recent}
         isLoading={overviewLoading || recentLoading}
